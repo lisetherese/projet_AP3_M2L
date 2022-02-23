@@ -1,0 +1,399 @@
+
+body {
+    padding-top: 5rem;
+}
+
+body::after {
+    content: "";
+    background: url("../img/cta-bg.jpg") top center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+    top: 0;
+    left: 0;
+    bottom: -500px;
+    right: -90px;
+    position: fixed;
+    z-index: -1;   
+}
+.starter-template { 
+    padding: 3rem 1.5rem; 
+}
+
+#logout{ display:none; }
+
+nav{
+  background-color: #2b4c88;
+  color: #ffff;
+}
+
+#navbarNavAltMarkup {
+    overflow: hidden;
+}
+#float_left{
+    float:left;
+}
+#float_right {
+    float:right;
+}
+#nom_user {
+    color: rgba(254, 200, 22, 0.87);
+}
+
+.nav-item .nav-link a:hover {
+    color: #ffff;
+}
+
+form i {
+    cursor: pointer;
+    font-size: 26px;
+}
+.table {
+    background-color: rgba(255,255,255,0.7);
+}
+.table th {
+    background-color: rgba(254, 200, 22, 0.7);
+}
+.php-email-form .error-message {
+    display: none;
+    color: #fff;
+    background: #ed3c0d;
+    text-align: center;
+    padding: 15px;
+    font-weight: 600;
+  }
+.php-email-form .sent-message {
+    display: none;
+    color: #fff;
+    background: #18d26e;
+    text-align: center;
+    padding: 15px;
+    font-weight: 600;
+  }
+.php-email-form .loading {
+    display: none;
+    background: #fff;
+    text-align: center;
+    padding: 15px;
+  }
+.php-email-form .loading:before {
+    content: "";
+    display: inline-block;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    margin: 0 10px -6px 0;
+    border: 3px solid #18d26e;
+    border-top-color: #eee;
+    -webkit-animation: animate-loading 1s linear infinite;
+    animation: animate-loading 1s linear infinite;
+  }
+.page-link{
+  background-color: rgba(254, 200, 22, 0.87);
+}
+.m-r-10px{ margin-right:10px; }
+.m-b-10px{ margin-bottom:10px; }
+.m-b-15px{ margin-bottom:15px; }
+.m-b-20px{ margin-bottom:20px; }
+.w-5-pct{ width:5%; }
+.w-10-pct{ width:10%; }
+.w-15-pct{ width:15%; }
+.w-20-pct{ width:20%; }
+.w-25-pct{ width:25%; }
+.w-30-pct{ width:30%; }
+.w-35-pct{ width:35%; }
+.w-40-pct{ width:40%; }
+.w-45-pct{ width:45%; }
+.w-50-pct{ width:50%; }
+.w-55-pct{ width:55%; }
+.w-60-pct{ width:60%; }
+.w-65-pct{ width:65%; }
+.w-70-pct{ width:70%; }
+.w-75-pct{ width:75%; }
+.w-80-pct{ width:80%; }
+.w-85-pct{ width:85%; }
+.w-90-pct{ width:90%; }
+.w-95-pct{ width:95%; }
+.w-100-pct{ width:100%; }
+.display-none{ display:none; }
+.padding-bottom-2em{ padding-bottom:2em; }
+.width-30-pct{ width:30%; }
+.width-40-pct{ width:40%; }
+.overflow-hidden{ overflow:hidden; }
+.margin-right-1em{ margin-right:1em; }
+.right-margin{ margin:0 .5em 0 0; }
+.margin-bottom-1em { margin-bottom:1em; }
+.margin-zero{ margin:0; }
+.text-align-center{ text-align:center; }
+
+
+/* STYLE DE LA BANNIERE */
+.banner {
+    margin-bottom: 20px;
+  }
+  .banniere {
+    /* background: rgb(254, 200, 22); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(254,200,22);
+    background: radial-gradient(circle, rgba(254,200,22,1) 0%, rgba(254,199,22,1) 11%, rgba(254,199,22,1) 14%, rgba(254,199,22,1) 23%, rgba(254,199,22,1) 29%, rgba(254,199,22,1) 36%, rgba(254,199,22,1) 45%, rgba(254,199,22,1) 54%, rgba(254,199,22,1) 62%, rgba(249,172,27,1) 78%, rgba(224,33,49,1) 100%);
+  }
+  #banner {
+    height: 118px;
+    width: 118px;
+    border-radius: 50%;
+    margin-left: 15px;
+  }
+  .banner h1 {
+    z-index: 500;
+    margin-left: auto;
+    margin-right: auto;
+    color: #2b4c88;
+    text-align: center;
+    font-weight: 900;
+    letter-spacing: 2px;
+  }
+  .banner h3 {
+    z-index: 500;
+    margin-left: auto;
+    margin-right: auto;
+    color: #e02131;
+    background: rgb(254, 200, 22);
+    text-align: center;
+  }
+  
+  /* STYLE DE LA SECTION DE PRESENTATION DE LA M2L */
+  #M2L {
+    border-radius: 10px;
+    color: #fec816;
+    border-style: solid;
+    border-width: 3px;
+    padding: 0.5%;
+  
+  
+    background: #FEC816;
+    background: -moz-linear-gradient(-45deg, #FEC816 0%, #E02131 100%);
+    background: -webkit-linear-gradient(-45deg, #FEC816 0%, #E02131 100%);
+    background: linear-gradient(135deg, #FEC816 0%, #E02131 100%);
+  
+    margin-right: 2%;
+    margin-bottom: 40px;
+  
+    -webkit-box-shadow: 5px 5px 0px 0px rgb(255, 208, 53),
+      10px 10px 0px 0px rgb(255, 214, 79), 15px 15px 0px 0px rgb(253, 225, 132),
+      20px 20px 0px 0px rgb(255, 226, 130), 25px 25px 0px 0px rgb(255, 240, 190),
+      1px 10px 11px 5px rgba(0, 0, 0, 0);
+    box-shadow: 5px 5px 0px 0px rgb(255, 207, 49),
+      10px 10px 0px 0px rgb(252, 215, 95), 15px 15px 0px 0px rgb(253, 221, 116),
+      20px 20px 0px 0px rgb(255, 232, 158), 25px 25px 0px 0px rgb(255, 237, 180),
+      1px 10px 11px 5px rgba(0, 0, 0, 0);
+  }
+  .presentation {
+    color: white;
+    text-align: center;
+    text-shadow: 4px 2px 4px rgb(0, 0, 0);
+  }
+  .pres {
+    color: white;
+    padding: 5px;
+    text-align: center;
+    text-shadow: 4px 2px 4px rgb(0, 0, 0);
+  }
+  
+  /* STYLE DE LA SECTION LIGUES */
+  #Ligues {
+    border-radius: 10px;
+    color: #fec816;
+    border-style: solid;
+    border-width: 3px;
+    padding: 0.5%;
+  
+    background: #FEC816;
+    background: -moz-linear-gradient(-45deg, #FEC816 0%, #E02131 100%);
+    background: -webkit-linear-gradient(-45deg, #FEC816 0%, #E02131 100%);
+    background: linear-gradient(135deg, #FEC816 0%, #E02131 100%);
+  
+    margin-right: 3%;
+    margin-bottom: 40px;
+  
+    -webkit-box-shadow: 5px 5px 0px 0px rgb(255, 208, 53),
+      10px 10px 0px 0px rgb(255, 214, 79), 15px 15px 0px 0px rgb(253, 225, 132),
+      20px 20px 0px 0px rgb(255, 226, 130), 25px 25px 0px 0px rgb(255, 240, 190),
+      1px 10px 11px 5px rgba(0, 0, 0, 0);
+    box-shadow: 5px 5px 0px 0px rgb(255, 207, 49),
+      10px 10px 0px 0px rgb(252, 215, 95), 15px 15px 0px 0px rgb(253, 221, 116),
+      20px 20px 0px 0px rgb(255, 232, 158), 25px 25px 0px 0px rgb(255, 237, 180),
+      1px 10px 11px 5px rgba(0, 0, 0, 0);
+  }
+  
+  /* Adaptation de la hauteur des images */
+  img.tennis, img.foot, img.plongee, img.bowling
+  {
+    height: 200px;
+  }
+  img.president
+  {
+    height: 300px;
+  }
+  
+  /* Style des articles */
+  .article
+  {
+    text-align: center;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+  
+  .login-form {
+    border-radius: 10px;
+    border: 3px solid rgb(254, 200, 22);
+    padding: 0.5% 1%;
+    margin-bottom: 20px;
+  
+    -webkit-box-shadow: 5px 5px 0px 0px rgb(255, 208, 53),
+      10px 10px 0px 0px rgb(255, 214, 79), 15px 15px 0px 0px rgb(253, 225, 132),
+      20px 20px 0px 0px rgb(255, 226, 130), 25px 25px 0px 0px rgb(255, 240, 190),
+      1px 10px 11px 5px rgba(0, 0, 0, 0);
+    box-shadow: 5px 5px 0px 0px rgb(255, 207, 49),
+      10px 10px 0px 0px rgb(252, 215, 95), 15px 15px 0px 0px rgb(253, 221, 116),
+      20px 20px 0px 0px rgb(255, 232, 158), 25px 25px 0px 0px rgb(255, 237, 180),
+      1px 10px 11px 5px rgba(0, 0, 0, 0);
+  
+      background: #FEC816;
+      background: -moz-linear-gradient(-45deg, #FEC816 0%, #E02131 100%);
+      background: -webkit-linear-gradient(-45deg, #FEC816 0%, #E02131 100%);
+      background: linear-gradient(135deg, #FEC816 0%, #E02131 100%);
+  }
+  
+  /* STYLE DES FORMULAIRES */
+  #Formulaires {
+      margin-bottom: 40px;
+  }
+  #Formulaires h5 {
+    color: #2b4c88;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-shadow: 4px 2px 4px rgb(0, 0, 0);
+  
+  }
+  .formulaire {
+    padding: 10px;
+    font-size: 14px;
+    border-top: 30px;
+  
+  }
+  /* Style du titre du formulaire */
+  .card-title {
+    font-weight: 900;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .card-text{
+    text-align: center;
+  }
+  
+  .titleForm {
+    color: #2b4c88;
+    font-size: 20;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+  }
+  
+  /* Style des champs de saisie */
+  .formulaire input, .formulaire textarea {
+    border-radius: 10px;
+    padding: 10px;
+  
+  }
+  .formulaire input:focus, .formulaire textarea:focus
+  {
+    border: none;
+    outline: none;
+  }
+  /* Style de la zone de mot de passe oublié */
+  .mdpForget {
+    padding: 10px 0px;
+    color: #2b4c88;
+  }
+  
+  .hidden {
+    position: relative;
+    width: 100%;
+  }
+  .image {
+      display: block;
+      width: 100%;
+      height: auto;
+  }
+  .overlay {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+      opacity: 0;
+      transition: .5s ease;
+      background-color: #2B4C88
+  }
+  .hidden:hover .overlay {
+      opacity: 90%;
+  }
+  .text-hidden {
+      color: #fec816;
+      font-size: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      height: 50%, 20%, 50%, 20%;
+      -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      text-align: center;
+  }
+  .titreligue {
+      color: #e02131;
+      text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.664);
+  }
+  
+  .back-to-top {
+      position: fixed;
+      visibility: hidden;
+      opacity: 0;
+      right: 15px;
+      bottom: 15px;
+      z-index: 998;
+      background: #2B4C88;
+      width: 40px;
+      height: 40px;
+      border-radius: 50px;
+      transition-duration: 2.5s;
+  }
+  .back-to-top i {
+      font-size: 24px;
+      color: #fff;
+      line-height: 0;
+  }
+  .back-to-top:hover {
+      background: #86c0da;
+      color: #fff;
+  }
+  .back-to-top.active {
+      visibility: visible;
+      opacity: 1;
+  }
+  
+  footer {
+      background: rgba(255, 255, 255, 0.664);
+      opacity: 1;
+  }
+  footer .textcolor {
+      color: #2B4C88;
+  }

@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="fr-FR">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+ 
+        <title>Maison Régionale des Sports de Lorraine</title>
+        <meta name="description" content="M2L  - Maison Régionale des Sports de Lorraine">
+        <meta name="keywords" content="maison des ligues, M2L, réservation des salles de sports, bordereau de note de frais">
+        <meta name="author" content="Lise Therese">
+
+        <!-- Favicons -->
+        <link href="assets/img/favicon.ico" rel="icon">
+        <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+ 
+        <!-- Bootstrap 4 CSS, icons and custom CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="assets/css/custom.css" />
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <!--HTML canvas-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.4/jspdf.plugin.autotable.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+        <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+        <!-- Font -->
+        <script src="https://kit.fontawesome.com/98aec3d11a.js" crossorigin="anonymous"></script>
+
+    </head>
+<body>
+<!-- navbar -->
+<nav class="navbar navbar-expand-md navbar-dark fixed-top" id="navbarontop">
+    <div class="logo-principal">
+    <a class="navbar-brand" href="#"><img src="assets/img/logo.png" alt="logo M2L" style="height: 35px;"> M2L</a>
+    </div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav"id="float_left">
+            <a class="nav-item nav-link" href="#" id='home'>Accueil</a>
+            <a style="display:none;" class="nav-item nav-link" href="#" id='update_account'>Update Compte</a>
+            <!--add menu according to the role of user-->
+            <div class="navbar-nav" id="role-menu"></div>
+
+            <a class="nav-item nav-link" href="#" id='logout'>Se déconnecter</a>
+            <!--<a class="nav-item nav-link" href="#" id='login'>Se connecter</a>-->
+            <a class="nav-item nav-link" href="#" id='sign_up'>S'incrire</a>
+            
+        </div>
+        <div class="navbar-nav" id="float_right">
+            <a class="nav-item nav-link" href="#"><i class="bi bi-person-circle"></i></a>
+            <a class="nav-item nav-link" href="#" id='nom_user'></a>
+        </div>
+    </div>
+</nav>
+<!-- /navbar -->
+ 
+<!-- container -->
+<main role="main" class="container starter-template">
+    <div class="row">
+        <div class="col">
+ 
+            <!-- where prompt / messages will appear -->
+            <div id="response"></div>
+            
+            <h2 id='page-title'></h2>
+            <!-- where main content will appear -->
+            <div id="content">
+                <div class="home">
+                    <div class="banner">
+                      <div class="banniere">
+                        <img src="assets/img/M2L net rond.png" id="banner">   
+                        <div>
+                          <h1>M2L</h1>
+                          <h3>Maison des Ligues de Lorraine</h3>
+                        </div>
+                      </div>
+                    </div>
+                
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3" id="Ligues">
+                                <div class="row article">
+                                <div class="col-md-12">
+                                    <div class="card text-white bg-warning hidden">
+                                        <img src="assets/img/bowling.jpg" class="card-img bowling" alt="..." />
+                                        <h5 class="card-title titreligue">BOWLING</h5>
+                                        <div class="card-img-overlay overlay" id="bowling">
+                                            <p class="card-text text-hidden"><strong>Le bowling, également appelé jeu de quilles, est un jeu qui consiste à renverser des quilles à l’aide d’une boule.</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="row article">
+                                <div class="col-md-12">
+                                    <div class="card text-white bg-warning hidden">
+                                    <img src="assets/img/foot.jpg" class="card-img foot" alt="..." />
+                                    <h5 class="card-title titreligue">FOOTBALL</h5>
+                                    <div class="card-img-overlay overlay" id="foot">
+                                        <p class="card-text text-hidden"><strong>Le football est un sport collectif qui se joue principalement au pied avec un ballon. Il oppose deux équipes de onze joueurs dans un stade, que ce soit sur un terrain gazonné.</strong></p>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="row article">
+                                <div class="col-md-12">
+                                    <div class="card text-white bg-warning hidden">
+                                    <img src="assets/img/tennis.jpg" class="card-img tennis" alt="..." />
+                                    <h5 class="card-title titreligue">TENNIS</h5>
+                                    <div class="card-img-overlay overlay" id="tennis">
+                                        <p class="card-text text-hidden"><strong>Le tennis est un sport de raquette qui oppose soit deux joueurs soit quatre joueurs qui forment deux équipes de deux.</strong></p>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="row article">
+                                <div class="col-md-12">
+                                    <div class="card text-white bg-warning hidden">
+                                        <img src="assets/img/plongee.jpg" class="card-img plongee" alt="..." />
+                                        <h5 class="card-title titreligue">PLONGEE</h5>
+                                        <div class="card-img-overlay overlay" id="plongee">
+                                            <p class="card-text text-hidden"><strong>La plongée sous-marine est une activité consistant à rester sous l’eau marine soit en apnée dans le cas de la plongée libre, en respirant à l’aide d’un narguilé.</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5" id="M2L">
+                                <div class="row">
+                                <div class="col-md-12">
+                                    <img src="assets/img/locaux.jpg" class="card-img" alt="..." />
+                                </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5 class="presentation">Présentation</h5>
+                                        <p class="pres">
+                                        La M2L (Maison des Ligues de Lorraine) est une structure financée à 100% par le Conseil Régional de Lorraine qui fournit des espaces et des services aux différentes ligues sportives régionales.
+                                        Elle est de nos jours dirigé par le CROS (accord passé entre le conseil régional et le Comité Régional Olympique et Sportif de Lorraine).
+                                        M2L regroupe de nombreux sports, du tennis à la plongée sous-marine en passant par le football.
+                                        Sur les pages suivantes vous retrouverez les ligues, leurs résultats et leurs actualité. Pour toute question, se référer à la page contact.
+                                        </p>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card text-white bg-warning">
+                                            <img src="assets/img/president-2.jpg" class="card-img president" alt="..." />
+                                            <h5 class="card-title titreligue">Jean-Marc HASS BECKER<br><br>Président du comité régional olympique et sportifs Grand Est</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3" id="Formulaires">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card login-form">
+                                        <div class="card-body">
+                                            <!-- Titre du formulaire -->
+                                            <h3 class="card-title text-center titleForm">CONNEXION</h3>
+                                            <div class="card-text">
+                                            <!-- Conteneur du formulaire -->
+                                            <div class="formulaire">
+                                                <form id='login_form'>
+                                                    <div class="form-group">
+                                                        <!-- Zone de saisie de l'email -->
+                                                        <input type="email" id='email_user' name='email' class="form-control form-control-sm" placeholder="Email" required/>
+                                                    </div>
+                                                    <div class="form-group my-4 input-group">
+                                                        <!-- Zone de saisie du mot de passe -->
+                                                        <input type="password" name="mdp" id="password" class="form-control form-control-sm" placeholder="Mot de passe" required/>
+                                                        <div class="input-group-append"><i class="bi bi-eye-slash input-group-text" id="togglePassword"></i></div>
+                                                    </div>
+                                                        <!-- Bouton de redirection vers la vue correspondante -->
+                                                        <button type="submit" class="btn btn-warning w-100">Se connecter</button>
+                                                </form>
+                                                
+                                                <!-- Zone du mot de passe oublié -->
+                                                <form id='mdp_oublie_form' action='forms/contact_user.php' method='post' class="php-email-form">
+                                                    
+                                                    
+                                                     <!--Zone de verifier si le message a été bien envoyé-->
+                                                     <div class="my-3">
+                                                        <div class="loading">En cours...</div>
+                                                        <div class="error-message"></div>
+                                                        <div class="sent-message">Le lien à changer votre mot de passe a été envoyé. Veuillez vérifier votre boite mail!</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <!--Input hidden until user click mdp oublié-->
+                                                        <input type="email" id='email_of_user' name='email' class="form-control form-control-sm" placeholder="Email" hidden/>
+                                                    </div>
+                                                    <div id="addButton">
+                                                        <button id="button_mdp_oublie" class="btn btn-danger w-100"> Mot de passe oublié ?</button>
+                                                    </div>
+                                                </form>
+                                                
+                                                
+
+                                                
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card login-form">
+                                    <div class="card-body">
+                                        <!-- Titre du formulaire -->
+                                        <h3 class="card-title text-center titleForm">CONTACTEZ-NOUS</h3>
+                                        <div class="card-text">
+                                        <!-- Conteneur du formulaire de contact -->
+                                        <div class="formulaire">
+                                            <form id='contact-form' action="forms/contact.php" method="post" class="php-email-form">
+                                                <div class="form-group">
+                                                    <!-- Zone de saisie du nom et du prénom -->
+                                                    <input type="text"  name="nom" id="nom" class="form-control form-control-sm" placeholder="Nom et prénom" required />
+                                                </div>
+                                                <div class="form-group mb-4">
+                                                    <!-- Zone de saisie de l'email -->
+                                                    <input type="email" name="email" id="email_contact"class="form-control form-control-sm" placeholder="E-mail" required />
+                                                </div>
+                                                <div class="form-group mb-4">
+                                                    <!-- Zone de saisie du message -->
+                                                    <textarea class="form-control form-control-sm" name="message" id="message" rows="5" placeholder="Message" required ></textarea>
+                                                </div>
+                                                <!--Zone de verifier si le message a été bien envoyé-->
+                                                <div class="my-3">
+                                                    <div class="loading">En cours...</div>
+                                                    <div class="error-message"></div>
+                                                    <div class="sent-message">Votre message a été envoyé. Merci!</div>
+                                                </div>
+                                                <!-- Bouton de redirection vers la vue correspondante -->
+                                                <button type="submit" class="btn btn-warning w-100">Envoyer</button>
+                                            </form>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div id="back-to-top">
+                        <a href="#banner" class="back-to-top d-flex align-items-center justify-content-center active"><i class="fas fa-arrow-up"></i></a>
+                    </div>
+        
+                    <footer class="text-center text-lg-start text-muted">
+                        <section class="">
+                            <div class="container text-center text-md-start mt-5">
+                                <div class="row"></div>
+                                <div class="row mt-3 textcolor">
+                                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                                        <h6 class="text-uppercase fw-bold mb-4">
+                                        <i class="fas fa-gem me-3"></i> MAISON DES LIGUES DE LORRAINE
+                                        </h6>
+                                        <img src="assets/img/M2L flou2.png">  
+                                    </div>
+                                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                                        <h6 class="text-uppercase fw-bold mb-4">LIGUES</h6>
+                                        <p><a href="#bowling" class="text-reset">Bowling</a></p>
+                                        <p><a href="#foot" class="text-reset">Foot</a></p>
+                                        <p><a href="#tennis" class="text-reset">Tennis</a></p>
+                                        <p><a href="#plongee" class="text-reset">Plongée</a></p>
+                                    </div>
+                                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                                        <h6 class="text-uppercase fw-bold mb-4">NOS RESEAUX</h6>
+                                        <p><a href="" class="me-4 text-reset"><i class="fab fa-linkedin"></i> M2L Maison Des Ligues</i></a></p>
+                                        <p><a href="" class="me-4 text-reset"><i class="fab fa-twitter"> @M2L</i></a></p>
+                                        <p><a href="" class="me-4 text-reset"><i class="fab fa-google"> Maison des Ligues</i></a></p>
+                                        <p><a href="" class="me-4 text-reset"><i class="fab fa-facebook-f"> Maison des Ligues</i></a></p>
+                                        <p><a href="" class="me-4 text-reset"><i class="fab fa-instagram"> MaisonDesLigues</i></a></p>
+                                        <p><a href="" class="me-4 text-reset"><i class="fab fa-github"> M2L_Git</i></a></p>
+                                    </div>
+                                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                                        <h6 class="text-uppercase fw-bold mb-4">CONTACTS</h6>
+                                        <p><i class="fas fa-home me-3"></i> 13 Rue Jean Moulin, 54510 Tomblaine</p>
+                                        <p><i class="fas fa-envelope me-3"></i> contact@M2L.com</p>
+                                        <p><i class="fas fa-phone me-3"></i> 01 02 03 04 05</p>
+                                        <p><i class="fas fa-print me-3"></i> 06 07 08 09 10</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                            <div class="text-center p-4 textcolor" style="background-color: rgba(0, 0, 0, 0.05);">© 2021 Copyright :<a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>. <span><a href="mentionslegales.html" target="_blank">Mentions légales.</a></span></div>
+                    </footer>
+                </div>
+            </div>
+
+        </div>
+    </div>
+ 
+</main>
+<!-- /container -->
+ 
+<!-- jQuery & Bootstrap 4 JavaScript libraries -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<!-- bootbox for confirm pop up -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+ 
+<!-- app js script -->
+<script src="assets/vendor/php-email-form/validate.js"></script>
+<script src="assets/js/page_principale.js"></script>
+<script src="assets/js/for_page/page.js"></script>
+<script src="assets/js/for_user/user.js"></script>
+<script src="assets/js/for_ligue/ligue.js"></script>
+<script src="assets/js/for_motif/motif.js"></script>
+<script src="assets/js/for_ligne_frais/ligne_frais.js"></script>
+<script src="assets/js/for_adherent/adherent.js"></script>
+<script src="assets/js/for_demandeur/demandeur.js"></script>
+<script src="assets/js/for_tresorier/tresorier.js"></script>
+<script src="assets/js/for_bordereau/bordereau.js"></script>
+<script src="assets/js/for_cerfa/cerfa.js"></script>
+
+
+</body>
+</html>
