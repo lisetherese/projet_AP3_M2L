@@ -83,7 +83,7 @@ function showBordereauTresorier(adherent_id){
                 `
                     <tr style="padding-top: 15px;padding-bottom: 15px;">
                         <td>${date}</td>
-                        <td id="libelle"></td>
+                        <td id="libelle${val.id}"></td>
                         <td>${val.trajet}</td>
                         <td>${val.km_valide}</td>
                         <td>${cout_trajet} &euro;</td>
@@ -93,7 +93,7 @@ function showBordereauTresorier(adherent_id){
                         <td>${total_par_ligne} &euro;</td>
                     </tr>`;
                 //add libelle of motif to 'td' tag above using function defined below to retrieve data by getJSON
-                getLibelle(val.id_motif, function(lib){$('#libelle').html(lib);});
+                getLibelle(val.id_motif, function(lib){$('#libelle'+ val.id).html(lib);});
                 
             });
 
