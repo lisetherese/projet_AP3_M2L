@@ -1,6 +1,8 @@
 
-function showLignesFraisTemplate(data, keywords){
-    var read_lignes_frais_html=`
+
+async function showLignesFraisTemplate(data, keywords){
+    
+    var read_html=`
         <!-- search lignes_frais form -->
         <form id='search-ligne-frais-form' action='#' method='post'>
         <div class='input-group float-left w-40-pct mb-4'>
@@ -39,15 +41,13 @@ function showLignesFraisTemplate(data, keywords){
                 <th class='w-10-pct'>Etre validé</th>
                 <th class='w-40-pct text-align-center'>Action</th>
             </tr>`;
-    var counter = 0;
-            // loop through returned list of data
-            $.each(data.records, function(key, val) {
-                //change counter
-                counter = counter + 1;
+        
+            $.each(data.records, async function(key, val) {
+                
                 //change display variable
                 var valide = (val.etre_valide == '0' || val.etre_valide == null) ? "Non" : "Oui" ;
                 // creating new table row per record
-                read_lignes_frais_html+= `
+                read_html+= `
                     <tr>
             
                         <td>` + val.id + `</td>
@@ -64,100 +64,69 @@ function showLignesFraisTemplate(data, keywords){
                             <button class='btn btn-primary m-r-10px read-one-ligne-frais-button' data-id='` + val.id + `'>
                                 <span><i class="bi bi-eye"></i></span> Lire
                             </button>
-                            <div id="functionButtons${counter}" style="display: inline;"></div>
+                            <div class="d-inline  m-r-10px w-25 selectButton" id="${val.id}" data-id="${val.id_user}" data-valide="${valide}">
+                                <button class='btn btn-primary'>
+                                    <span><i class="bi bi-info-circle"></i></span> Actions
+                                </button>
+                            </div>
+                            
                             `;
-                getButtons(val.id_user,valide,val.id,function(bor_valide){ $('#functionButtons' + counter).html(bor_valide);});    
-
                 
-            });
-        
+                
+            });    
+           
         // end table
-        read_lignes_frais_html+=`</td></tr></table>`;
+        read_html+=`</td></tr></table>`;
         // pagination
         if(data.paging){
-            read_lignes_frais_html+="<nav aria-label='search ligne frais pages'><ul class='pagination float-left margin-zero padding-bottom-2em'>";
+            read_html+="<nav aria-label='search ligne frais pages'><ul class='pagination lignes float-left margin-zero padding-bottom-2em'>";
         
                 // first page
                 if(data.paging.first!=""){
-                    read_lignes_frais_html+="<li class='page-item'><a class='page-link' data-page='" + data.paging.first + "'>Première Page</a></li>";
+                    read_html+="<li class='page-item'><a class='page-link' data-page='" + data.paging.first + "'>Première Page</a></li>";
                 }
         
                 // loop through pages
                 $.each(data.paging.pages, function(key, val){
                     var active_page=val.current_page=="yes" ? "active" : "";
-                    read_lignes_frais_html+="<li class='page-item " + active_page + "'><a class='page-link' data-page='" + val.url + "'>" + val.page + "</a></li>";
+                    read_html+="<li class='page-item " + active_page + "'><a class='page-link' data-page='" + val.url + "'>" + val.page + "</a></li>";
                 });
         
                 // last page
                 if(data.paging.last!=""){
-                    read_lignes_frais_html+="<li class='page-item'><a class='page-link' data-page='" + data.paging.last + "'>Dernière Page</a></li>";
+                    read_html+="<li class='page-item'><a class='page-link' data-page='" + data.paging.last + "'>Dernière Page</a></li>";
                 }
-            read_lignes_frais_html+="</ul></nav>";
+            read_html+="</ul></nav>";
         }
 
         // inject this piece of html to our page
-        $("#content").html(read_lignes_frais_html);
+        $("#content").html(read_html);
+
+        
 
 }
 
-//function to retrieve value for buttons display from getJSON() using callback
-function getButtons(val,valide,val_id,callback){
-    var html='';
-    $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + val, function(da){   
-        // if le bordereau et la ligne frais pas encore validés        
-        if(da.etre_valide != "1"){
-            if(valide === "Non"){
-                html+=
-                `
-                <!-- edit button -->
-                <button class='btn btn-info m-r-10px update-ligne-frais-button' data-id='` + val_id + `'>
-                    <span><i class="bi bi-pencil-square"></i></span> Modifier
-                </button>
 
-                <!-- delete button -->
-                <button class='btn btn-danger delete-ligne-frais-button' data-id='` + val_id + `'>
-                    <span><i class="bi bi-x-lg"></i></span> Supprimer
-                </button>
-
-                <!-- valider ligne frais button -->
-                <button class='btn btn-dark valider-ligne-frais-button' data-id='` + val_id + `'>
-                    <span><i class="bi bi-check"></i></span> Valider
-                </button>`;
-            }else{
-                html+=`
-                    <!-- invalider ligne frais button -->
-                    <button class='btn btn-warning invalider-ligne-frais-button' data-id='` + val_id + `'>
-                        <span><i class="bi bi-arrow-clockwise"></i></span> Invalider
-                    </button>`;
-            }
-        }
-        callback(html);         
-    });
-}
 
 function showLignesFraisFirstPage(){
     var json_url="http://localhost/M2L/api/ligne_frais/read_paging_lignes.php";
     showLignesFrais(json_url);
 }
 
-// function to show list of lignes_frais
-function showLignesFrais(json_url){
 
-    // get list of lignes_frais from the API
-    $.getJSON(json_url, function(data){
+async function showLignesFrais(json_url){
+
+    const data = await $.getJSON(json_url); 
+    if (data.message){
+        $('#response').html("<div class='alert alert-danger'>Aucune ligne frais trouvée.</div>");
+        addLigneFraisButton();
+    }else{
         
-        // check if list of lignes_frais is empty or not
-        if (data.message){
-            $('#response').html("<div class='alert alert-danger'>Aucune ligne frais trouvée.</div>");
-            addLigneFraisButton();
-        }else{
-            clearResponse();
-            // html for listing lignes_frais
-            showLignesFraisTemplate(data, "");
-            changePageTitle('Liste des lignes frais');
-        }
-    }); 
-    
+        // html for listing lignes_frais
+        showLignesFraisTemplate(data, "");
+        changePageTitle('Liste des lignes frais');
+    }
+       
 }
 
 function createLigneFraisForm(){
@@ -563,7 +532,8 @@ function updateOneLigneFrais(data){
 }
 
 function showOneLigneFraisTemplate(data){
-    var valide = (data.etre_valide == '0' || data.etre_valide == null) ? "Non" : "Oui"
+    var valide = (data.etre_valide == 0 || data.etre_valide == null) ? "Non" : "Oui";
+    var id_user = data.id_user;
     var read_one_ligne_frais_html=`
                         <!-- when clicked, it will show the lignes_frais list -->
                         <div id='all-ligne-frais' class='btn btn-primary float-right m-b-15px all-ligne-frais-button'>
@@ -660,23 +630,29 @@ function showOneLigneFraisTemplate(data){
                                     
                                    `;
                                     
-            if(valide == "Non"){
+            if(valide == 'Non'){
                 read_one_ligne_frais_html+=`
                                     <tr>
-                                        <td><div>
-                                            <button class='btn btn-info m-r-10px update-ligne-frais-button' data-id='` + data.id + `'>
-                                                <span><i class="bi bi-pencil-square"></i></span> Modifier
-                                            </button></div>
+                                        <td>
+                                            <div class='btn btn-info all-ligne-frais-button'><span><i class="bi bi-arrow-left-short"></i></span> Retourner</div>                                            
                                         </td>
-                                        <td><div><button class='btn btn-dark valider-ligne-frais-button' data-id='` + data.id + `'>
-                                                    <span><i class="bi bi-check"></i></span> Valider Ligne Frais</button></div>
+                                        <td><div>
+                                                <button class='btn btn-info m-r-10px update-ligne-frais-button' data-id='` + data.id + `'>
+                                                    <span><i class="bi bi-pencil-square"></i></span> Modifier
+                                                </button>
+                                                <button class='btn btn-dark valider-ligne-frais-button' data-id='` + data.id + `'>
+                                                    <span><i class="bi bi-check"></i></span> Valider Ligne Frais
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </table>
                                 </div>`;
+                // inject html to 'page-content' of our app
+                $("#content").html(read_one_ligne_frais_html);
             }else{
-                $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + data.id_user, function(da){
-                    if(da.etre_valide == null || da.etre_valide == "0"){
+                $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + id_user, function(da){
+                    if( da.message || (da.etre_valide == null || da.etre_valide == 0)){
                         read_one_ligne_frais_html+=`
                                     <tr>
                                         <td>
@@ -690,6 +666,8 @@ function showOneLigneFraisTemplate(data){
                                 </table>
                                 </div>
                                 `;
+                        // inject html to 'page-content' of our app
+                        $("#content").html(read_one_ligne_frais_html);
                     }else{
                         read_one_ligne_frais_html+=`
                                     <tr>
@@ -701,10 +679,9 @@ function showOneLigneFraisTemplate(data){
                                 </table>
                                 </div>
                                 `;
+                         // inject html to 'page-content' of our app
+                         $("#content").html(read_one_ligne_frais_html);
                     }
-
-                    // inject html to 'page-content' of our app
-                    $("#content").html(read_one_ligne_frais_html);
                 
                 });
             }

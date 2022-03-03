@@ -1,7 +1,7 @@
  // jQuery codes
  $(document).ready(function(){
 
-    //functions to fill/ unfill cases in CERFA form
+    //functions to fill/ unfill cases in CERFA form (divided into 2 div )
     $(document).on('click',"#div1 p span", function(){
         $("#div1>p,#div1>p>span").removeClass("bg-dark");
         $(this).addClass("bg-dark");
@@ -17,6 +17,7 @@
         $('#password').attr("type", type);
         $('#togglePassword').toggleClass('bi-eye');
     })
+    // prevent auto-reload page on submiting form
     $('form').submit(function(e){
         e.preventDefault();
     })
@@ -35,7 +36,7 @@
         // get form data to parse through it to make an object and finally JSON.stringify() to make a string in form json
         var form_data=JSON.stringify($(this).serializeObject());
 
-        // submit form data to api
+        // submit form data to api using HTTP connection
         $.ajax({
             url: "api/user/create_user.php",
             type : "POST",
@@ -43,7 +44,7 @@
             data : form_data,
             success : function(result) {
                 showLoginPage();
-                // if response is a success, tell the user it was a successful sign up & empty the input boxes
+                // if response is a success, tell the user it was a successful sign up
                 $('#response').html("<div class='alert alert-success'>Inscription réussie. Veuillez vous connecter.</div>");
             },
             error: function(xhr, resp, text){
@@ -71,27 +72,28 @@
         //declare variable to take result from first ajax post result
         var role_user;
         // submit form data to api login.php, take back a JSON object named 'result' with all data of user, except for password 
+        // to display nav-bar according to user_role
         $.ajax({
             url: "api/user/login.php",
             type : "POST",
             contentType : 'application/json',
             data : new_form_data,
             success : function(result){
-                // store jwt to cookie
+                // store jwt(json web token) from result into cookie
                 setCookie("jwt", result.jwt, 1);
                 // show home page's content & tell the user it was a successful login
                 showHomePage(result.role, result.email);
                 $('#response').html("<div class='alert alert-success'>Connexion réussie.</div>");
-                //change look on page
-                //$('#page_title').text('');
+                //display email of user near icon on page
                 $('#nom_user').text(result.email);
                 //display log in menu according to role of user
                 showLoggedInMenu(result.role);
-                //set value for variable dclared above
+                //set value for variable declared above
                 role_user = result.role;    
                 //add id_user found in this result in form data
                 form_data.id_user = result.id;
             },
+            //display nav-bar for user according to status: 'not yet asked d'adhesion' or 'already sent demande'
             complete:function(){
                 if(role_user=='user'){
                     //convert into json string with form updated (added id_user)
@@ -116,7 +118,7 @@
             error: function(xhr, resp, text){
                 // on error, tell the user login has failed & empty the input boxes
                 $('#response').html("<div class='alert alert-danger'>Echec de la connexion. Email ou mot de passe incorrect.</div>");
-                login_form.find('input').val('');
+                $('#login_form').find('input').val('');
             }
         });
         // prevent reload page
@@ -150,15 +152,15 @@
         //change title
         changePageTitle("Liste des ligues");  
 
-         // when a 'page' button was clicked
-        $(document).on('click', '.pagination li', function(){
-            // get json url
-            var json_url=$(this).find('a').attr('data-page');
+    });
+    
+    // when a 'page' button was clicked
+    $(document).on('click', '.ligues li', function(){
+        // get json url
+        var json_url=$(this).find('a').attr('data-page');
 
-            // show list of ligues
-            showLigues(json_url);
-        });
-
+        // show list of ligues
+        showLigues(json_url);
     });
 
     // when a 'update ligue' button was clicked
@@ -171,7 +173,7 @@
         });
 
         //change title
-        changePageTitle("Mis à jour la ligue");
+        changePageTitle("Mettre à jour la ligue");
 
         // prevent whole page reload
         return false;
@@ -249,7 +251,7 @@
  
         // get data from the api based on search keywords
         $.getJSON("http://localhost/M2L/api/ligue/search_ligue.php?s=" + keywords, function(data){
-            if(data.message){$('#response').html("<div class='alert alert-danger'>${data.message}.</div>")}else{
+            if(data.message){$('#response').html(`<div class='alert alert-danger'>${data.message}.</div>`)}else{
             // template in ligues.js
             showLiguesTemplate(data, keywords);}
  
@@ -342,16 +344,16 @@
         //change title
         changePageTitle("Liste d'utilisateurs"); 
         
-        // when a 'page' button was clicked
-        $(document).on('click', '.pagination li', function(){
-            // get json url
-            var json_url=$(this).find('a').attr('data-page');
-
-            // show list of users
-            showUsers(json_url);
-        });
-
     });
+    // when a 'page' button was clicked
+    $(document).on('click', '.users li', function(){
+        // get json url
+        var json_url=$(this).find('a').attr('data-page');
+
+        // show list of users
+        showUsers(json_url);
+    });
+
 
     // when a 'update user' button was clicked
     $(document).on('click', '.update-user-button', function(){
@@ -363,7 +365,7 @@
         });
 
         //change title
-        changePageTitle("Mis à jour l'utilisateur");
+        changePageTitle("Mettre à jour l'utilisateur");
 
         // prevent whole page reload
         return false;
@@ -441,7 +443,7 @@
  
         // get data from the api based on search keywords
         $.getJSON("http://localhost/M2L/api/user/search_user.php?s=" + keywords, function(data){
-            if(data.message){$('#response').html("<div class='alert alert-danger'>${data.message}.</div>")}else{
+            if(data.message){$('#response').html(`<div class='alert alert-danger'>${data.message}.</div>`)}else{
             // template in users.js
             showUsersTemplate(data, keywords);}
  
@@ -537,7 +539,7 @@
         var jwt = getCookie('jwt');
         $.post("api/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
 
-            changePageTitle("Mis à jour votre compte");
+            changePageTitle("Mettre à jour votre compte");
 
             // if response is valid, put user details in the form
             showUpdateAccountHTML(result);
@@ -616,16 +618,15 @@
     $(document).on('click', '#gerer-demandeur', function(){
         showDemandeursFirstPage();
         changePageTitle("Liste des demandeurs");
-        
-        // when a 'page' button was clicked
-        $(document).on('click', '.pagination li', function(){
-            // get json url
-            var json_url=$(this).find('a').attr('data-page');
 
-            // show list of demandeurs
-            showDemandeurs(json_url);
-        });
+    });
+    // when a 'page' button was clicked
+    $(document).on('click', '.demandeurs li', function(){
+        // get json url
+        var json_url=$(this).find('a').attr('data-page');
 
+        // show list of demandeurs
+        showDemandeurs(json_url);
     });
 
     // when a 'update demandeur' button was clicked
@@ -637,11 +638,11 @@
         $.getJSON("http://localhost/M2L/api/demandeur/read_one_demandeur.php?id=" + id, function(data){
             clearResponse();
              //change title
-            changePageTitle("Mis à jour la demandeur");
+            changePageTitle("Mettre à jour le demandeur");
             updateOneDemandeur(data);
         });
         // prevent whole page reload
-        //return false;
+        return false;
 
     });
 
@@ -668,7 +669,7 @@
                 callback: function (result) {
                     // request succeeded!
                     if(result==true){
-                        // change status "etre_adherent" of demandeur
+                        // change status "etre_adherent" of demandeur and change role 'adherent' in table utilisateur
                         addAdhesion(demandeur_id, user_id);
     
                     }
@@ -678,7 +679,7 @@
         
     });
     
-
+    // when click button 'Sauvegarder' in form: 'Mettre à jour le demandeur'
     $(document).on('submit', '#update-demandeur-form', function(){
         $("#id_ligue:selected").val();
         var form_data=JSON.stringify($(this).serializeObject());
@@ -696,18 +697,18 @@
                 //remove title
                 $('#page-title').text('');
 
-                // replace content div
+                // replace content div by list of all demandeurs
                 showAllDemandeursButton();
             },
         
-            // show error message to demandeur
+            // show error message to user
             error: function(xhr, resp, text){
                 
                 showAllDemandeursButton();
                 $('#response').html("<div class='alert alert-danger'>Impossible de mettre à jour le demandeur.</div>");
             }
         });
-
+        //prevent re-load page
         return false;
 
     });
@@ -721,7 +722,7 @@
             // show HTML template
             showOneDemandeurTemplate(data);
             // chage page title
-            changePageTitle("Info demandeur");
+            changePageTitle("Info du demandeur");
             
             
         });
@@ -729,14 +730,14 @@
         return false;
     });
 
-    // when 'all demandeurs' button was clicked
+    // when 'Tous Demandeurs' button was clicked
     $(document).on('click', '.all-demandeurs-button', function(){
         showDemandeursFirstPage();
         changePageTitle("Liste des demandeurs");
     });
 
     
-    // when a 'search demandeurs' button was clicked
+    // when a 'search demandeurs' form was clicked (submitted)
     $(document).on('submit', '#search-demandeur-form', function(){
         clearResponse();
     
@@ -748,8 +749,9 @@
     
         // get data from the api based on search keywords
         $.getJSON("http://localhost/M2L/api/demandeur/search_demandeur.php?s=" + keywords, function(data){
-            if(data.message){$('#response').html("<div class='alert alert-danger'>${data.message}.</div>")}else{
-            // template in demandeurs.js
+            // if can't be found -> display div alert-danger telling user of the result
+            if(data.message){$('#response').html(`<div class='alert alert-danger'>${data.message}.</div>`)}else{
+            // if succeeded, show template in demandeurs.js: show all demandeurs correspond to the search
             showDemandeursTemplate(data, keywords);}
     
         });
@@ -766,7 +768,7 @@
         // bootbox for good looking 'confirm pop up'
         bootbox.confirm({
         
-            message: "<h4>Vous êtes sur de supprimer ?</h4>",
+            message: "<h4>Vous êtes sûr de supprimer ce demandeur ?</h4>",
             buttons: {
                 confirm: {
                     label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -804,9 +806,11 @@
         });
     });
 
-        // when 'create demandeur' button was clicked
+        // when 'create demandeur' button was clicked, show formulaire to create demandeur
     $(document).on('click', '.create-demandeur-button', function(){
+        //change title of page
         changePageTitle("Créer le demandeur"); 
+        //clear previous response
         clearResponse();
         var content = createDemandeurForm();
         $.getJSON("http://localhost/M2L/api/ligue/read.php", function(data){
@@ -815,28 +819,30 @@
                 // pre-select option is category id is the same
                 content+=`<option value='` + val.id + `'>` + val.nom + `</option>`; 
             });
-            
+            //connect with the ending of form
             content+=
-        `   </select>
-                </td>
-            </tr>
-            <tr>
-                <td><div class='btn btn-info all-demandeurs-button'><span><i class="bi bi-arrow-left-short"></i></span> Retourner</div></td>
-                <td><button type='submit' class='btn btn-primary'><span><i class="bi bi-plus"></i></span> Créer</button></td>
-            </tr>
-            </table>
-            </div>
-            </form>`;
-        
-        $('#content').html(content);
+                        `   </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><div class='btn btn-info all-demandeurs-button'><span><i class="bi bi-arrow-left-short"></i></span> Retourner</div></td>
+                                <td><button type='submit' class='btn btn-primary'><span><i class="bi bi-plus"></i></span> Créer</button></td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>`;
+            // inject content in div 'content' of page
+            $('#content').html(content);
 
         });
 
     });
 
-    // on submitting form create demandeur
+    // on submitting form create demandeur (when clicking 'Créer' button at the end of 'Créer le demandeur' formulaire)
     $(document).on('submit', '#create-demandeur-form', function(){
+        //take value selected in 'Ligue' drop-down list in form
         $("#id_ligue:selected").val();
+        //prepare form data in JSON form to send by ajax
         var form_data=JSON.stringify($(this).serializeObject());
         // submit form data to api
         $.ajax({
@@ -859,16 +865,16 @@
         
         return false;
     });
-
-    // when 'demande adhesion' button was clicked
+    //=========== BUTTON ON NAV-BAR OF USER WHO ASKS FOR ADHESION ==========
+    // when 'Demander d'adhésion' button was clicked by user (not yet become demandeur)
     $(document).on('click', '#demander-adhesion', function(){
         var jwt = getCookie('jwt');
         $.post("api/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
-
+            //change page title
             changePageTitle("Formulaire de demander d'adhésion");
-            // if response is valid, user can put details in the form
+            // if response is valid, user can input details in the HTML form created in user.js
             demanderAdhesionFormulaire(result);
-            
+            //clear all possible previous response
             clearResponse();
         })
         // on error/fail, tell the user he needs to login to show the account page
@@ -880,7 +886,7 @@
     });
 
     
-    // on submitting form create demandeur
+    // on submitting form named 'Formulaire de demander d'adhésion' by clicking 'Envoyer la demande'
     $(document).on('submit', '#demander-adhesion-form', function(e){
         //stop form from functioning as usual
         e.preventDefault();
@@ -913,7 +919,7 @@
                 changePageTitle('');
                 // tell user that demandeur was created
                 $('#response').html("<div class='alert alert-success'>Votre demande d'adhésion a été créée.</div>");
-                //conditions to switch functions on menu of user
+                //set conditions to switch 'displaying butttons' on nav-bar of user
                 if(!$('#demander-adhesion').hasClass('d-none')){
                     $('#demander-adhesion').addClass('d-none');
                 }
@@ -924,7 +930,7 @@
             },
             error: function(xhr, resp, text) {
                 // show error
-                $('#response').html("<div class='alert alert-danger'>Impossible de créer la demande. Veuillez nous contacter directement par mail. Merci!</div>");
+                $('#response').html("<div class='alert alert-danger'>Impossible de créer la demande. Veuillez nous contacter directement par mail dans la page d'accueil. Merci!</div>");
             }
         });
 
@@ -940,7 +946,7 @@
             changePageTitle("Votre demande d'adhésion");
             // if response is valid, user can see and modify details in the form
             displayAdhesionFormulaire(result);
-            
+            // inform user of the status of his demande
             $('#response').html(`<div class='alert alert-primary'>Votre demande d'adhésion est en train d'être examiner. Vous pouvez renvoyer votre demande en cas de modification.</div>`);
         })
         // on error/fail, tell the user he needs to login to show the account page
@@ -983,7 +989,7 @@
                 $(".form-group,.btn").addClass('d-none');
                 //erase page title 
                 changePageTitle('');
-                // tell user that demandeur was created
+                // tell user that demandeur was modified
                 $('#response').html("<div class='alert alert-success'>Votre demande d'adhésion a été modifiée.</div>");
                 //conditions to switch functions on menu of user
                 if(!$('#demander-adhesion').hasClass('d-none')){
@@ -996,7 +1002,7 @@
             },
             error: function(xhr, resp, text) {
                 // show error
-                $('#response').html("<div class='alert alert-danger'>Impossible de modifier la demande. Veuillez nous contacter directement par mail. Merci!</div>");
+                $('#response').html("<div class='alert alert-danger'>Impossible de modifier la demande. Veuillez nous contacter directement par mail dans la page d'accueil. Merci!</div>");
             }
         });
 
@@ -1004,8 +1010,8 @@
         return false;
 
     });
-
-    //onlick button Motif
+    //=============== BUTTONS ON ADMIN NAV-BAR ===============
+    //onlick button 'Motifs'
     $(document).on('click', '#gerer-motif', function(){
         // clear response content
         clearResponse();
@@ -1014,15 +1020,13 @@
         //change title
         changePageTitle("Liste des motifs");  
 
-        // when a 'page' button was clicked
-        $(document).on('click', '.pagination li', function(){
-            // get json url
-            var json_url=$(this).find('a').attr('data-page');
-
-            // show list of motifs
-            showMotifs(json_url);
-        });
-
+    });
+    // when a 'page' button in Motifs listwas clicked
+    $(document).on('click', '.motifs li', function(){
+        // get json url
+        var json_url=$(this).find('a').attr('data-page');
+        // show list of motifs by page
+        showMotifs(json_url);
     });
 
     // when a 'update motif' button was clicked
@@ -1035,7 +1039,7 @@
         });
 
         //change title
-        changePageTitle("Mis à jour le motif");
+        changePageTitle("Mettre à jour le motif");
 
         // prevent whole page reload
         return false;
@@ -1043,7 +1047,7 @@
     });
 
     $(document).on('submit', '#update-motif-form', function(){
-
+        //prepare form-data in JSON form string
         var form_data=JSON.stringify($(this).serializeObject());
         // post JSON string above to file controller
         $.ajax({
@@ -1059,18 +1063,19 @@
                 //remove title
                 $('#page-title').text('');
 
-                // replace content div
+                // display button 'Tous motifs'
                 showAllMotifsButton();
             },
         
             // show error message to motif
             error: function(xhr, resp, text){
-            
+                //display response
                 $('#response').html("<div class='alert alert-danger'>Impossible de mettre à jour le motif.</div>");
+                // display button 'Tous motifs'
                 showAllMotifsButton();
             }
         });
-
+        //prevent re-load auto
         return false;
 
     });
@@ -1114,7 +1119,7 @@
         // bootbox for good looking 'confirm pop up'
         bootbox.confirm({
         
-            message: "<h4>Vous êtes sur de supprimer ?</h4>",
+            message: "<h4>Vous êtes sur de supprimer ce motif ?</h4>",
             buttons: {
                 confirm: {
                     label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -1136,10 +1141,10 @@
                         dataType : 'json',
                         data : JSON.stringify({ id: motif_id }),
                         success : function(result) {
-                
                             // re-load list of motifs
                             showMotifsFirstPage();
                             changePageTitle('Liste des motifs');
+                            $('#response').html("<div class='alert alert-success'>Le motif a été bien supprimé.</div>");
                         },
                         error: function(xhr, resp, text) {
                             $('#response').html("<div class='alert alert-danger'>Impossible de supprimer le motif. Veuillez contacter l'administrateur.</div>");
@@ -1151,13 +1156,13 @@
         });
     });
 
-    // when 'create motif' button was clicked
+    // when 'Créer Motif' button was clicked
     $(document).on('click', '.create-motif-button', function(){
         changePageTitle("Créer le motif"); 
         clearResponse();
         createMotif();
     });
-    // on submitting form create motif
+    // on submitting form create motif: clicking 'Créer' at the bottom of the form
     $(document).on('submit', '#create-motif-form', function(){
         var form_data=JSON.stringify($(this).serializeObject());
         // submit form data to api
@@ -1169,6 +1174,8 @@
             success : function(result) {
                 // motif was created, go back to motifs list
                 showMotifsFirstPage();
+                changePageTitle('Liste des motifs');
+                $('#response').html("<div class='alert alert-success'>Le motif a été crée.</div>");
             },
             error: function(xhr, resp, text) {
                 // show error
@@ -1179,20 +1186,47 @@
         return false;
     });
 
-    //onlick button ligne frais
+    //onlick button 'Lignes frais' on nav-bar
     $(document).on('click', '#gerer-ligne-frais', function(){
-        // show list of lignes frais
-        showLignesFraisFirstPage();
-        //change title
-        changePageTitle("Liste des lignes frais");  
-        // when a 'page' button was clicked
-        $(document).on('click', '.pagination li', function(){
-            // get json url
-            var json_url=$(this).find('a').attr('data-page');
-
-            // show list of motifs
-            showLignesFrais(json_url);
+        clearResponse();
+        // show list of lignes frais + change page title to 'Liste de lignes frais'
+        showLignesFraisFirstPage(); 
+    });
+    // when click the button 'Actions' beside the 'Lire' button for each row of ligne frais
+    $(document).on("click",".selectButton",function() {
+        //retrieve data contained in div 'selectButton'
+        var id_ligne =  $(this).attr('id');
+        var id_user = $(this).attr('data-id');
+        var valide = $(this).attr('data-valide');
+        //request data from table bordereau according to id_user
+        $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + id_user, function(da){
+            //replace button 'Actions' by the other buttons 
+            //if no bordereau found and the ligne frais is not yet validated
+            // or if bordereau found and its not yet validated and the ligne frais itself is not validated too 
+            //admin or tresorier will see buttons: Modifier + Supprimer + Valider
+            if((da.message && valide == "Non") || (da.etre_valide && da.etre_valide != "1" && valide == "Non")){
+                $('#'+ id_ligne).html(`<button class="btn btn-info m-r-10px update-ligne-frais-button" data-id='${id_ligne}'>Modifier</button>
+                <button class="btn btn-danger m-r-10px delete-ligne-frais-button" data-id='${id_ligne}'>Supprimer</button>
+                <button class="btn btn-dark m-r-10px valider-ligne-frais-button" data-id='${id_ligne}'>Valider</button>`);
+            //if bordereau found and its not yet validated and the ligne frais is already validated
+            //or if bordereau not found and the ligne frais is validated
+            //admin and tresorier will see button: Invalider
+            }else if((da.etre_valide && da.etre_valide != "1" && valide != "Non") || (da.message && valide == "Oui")){
+                $('#'+ id_ligne).html(`<button class="btn btn-warning m-r-10px invalider-ligne-frais-button" data-id='${id_ligne}'>Invalider</button>`);
+            //other cases: no action possible
+            }else{
+                $('#'+ id_ligne).html(`<button class="btn btn-secondary m-r-10px">Aucune action possible</button>`);
+            }
         });
+    });
+
+    // when a 'page' button was clicked
+    $(document).on('click', '.lignes li', function(){
+        // get json url
+        var json_url=$(this).find('a').attr('data-page');
+
+        // show list of motifs
+        showLignesFrais(json_url);
     });
     
     // when 'create ligne frais' button was clicked
@@ -1200,6 +1234,7 @@
         changePageTitle("Créer la ligne frais"); 
         clearResponse();
         var html = createLigneFraisForm();
+        //get all motifs to put into 'select' of the form to create ligne frais
         $.getJSON("http://localhost/M2L/api/motif/read.php", function(data){
             
             $.each(data.records, function(key, val){
@@ -1218,10 +1253,12 @@
                 </div>
                 </form>`;
             $('#content').html(html);
+            //on displaying form, at first, hide all div(s) below
             $('.div-peage, .div-repas, .div-hebergement').hide();
         }); 
        
     });
+    //if each div corresponding is clicked -> show that div in form to input data
     $(document).on('click', '#ajout-peage', function(){
         $('.div-peage').show('slow');
     });
@@ -1234,16 +1271,21 @@
     // on submitting form create ligne frais
     $(document).on('submit', '#create-ligne-frais-form', function(){
         var data = $(this).serializeObject();
+        //take only the names of files chosen, remove all fakepath added auto to that file by the system 
         var peageJustif = $('#p_justificatif').val().replace(/C:\\fakepath\\/i, '');
         var repasJustif = $('#r_justificatif').val().replace(/C:\\fakepath\\/i, '');
         var hebergeJustif = $('#h_justificatif').val().replace(/C:\\fakepath\\/i, '');
+        //add those files' names into  data form
         data.peage_justificatif = peageJustif;
         data.repas_justificatif = repasJustif;
         data.justificatif = hebergeJustif;
+        //convert form-data into json string
         var form_data=JSON.stringify(data);
         //for uploading files by XHTTP
         var formData = new FormData();
+        //add value input in #id_user in form to formData declared above using integrated function .append() of class Formdata
         formData.append("id_user",$('#id_user').val());
+        //if file is chosen, attach that file to formdata
         if(peageJustif){
             var file_peage = document.getElementById("p_justificatif").files;
             formData.append("peage_jus", file_peage[0]);
@@ -1256,21 +1298,23 @@
             var file_heberge = document.getElementById("h_justificatif").files;
             formData.append("heberge_jus", file_heberge[0]);
         }
+        //using xhttp to upload attached files in formData to our folder: assets/files/ligne_frais
         var xhttp = new XMLHttpRequest();
          // Set POST method and ajax file path
         xhttp.open("POST", "http://localhost/M2L/api/ligne_frais/upload_files.php", true);
         // call on request changes state
         xhttp.onreadystatechange = function() {
+            // if uploading file succeeded
             if (this.readyState == 4 && this.status == 200) {
-    
-            var response = this.responseText;
-            alert(response);
+                //alert response defined in file 'upload_files.php'
+                var response = this.responseText;
+                alert(response);
             }
         };
         // Send request with data
         xhttp.send(formData);
 
-        // submit form data to api
+        // Then, submit form data to api to inject ligne frais into our DB
         $.ajax({
             url: "http://localhost/M2L/api/ligne_frais/create_ligne_frais.php",
             type : "POST",
@@ -1286,10 +1330,11 @@
                 $('#response').html("<div class='alert alert-danger'>Impossible de créer la ligne frais. Veuillez contacter l'administrateur.</div>");
             }
         });
-        
+        //prevent auto reload
         return false;
     });
-    // when a 'delete' button was clicked
+
+    // when 'Supprimer' button was clicked for ligne frais
     $(document).on('click', '.delete-ligne-frais-button', function(){
         // get the id
         var ligne_id = $(this).attr('data-id');
@@ -1297,7 +1342,7 @@
         // bootbox for good looking 'confirm pop up'
         bootbox.confirm({
         
-            message: "<h4>Vous êtes sur de supprimer ?</h4>",
+            message: "<h4>Vous êtes sur de supprimer cette ligne frais ?</h4>",
             buttons: {
                 confirm: {
                     label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -1314,7 +1359,7 @@
                     // delete files of a ligne frais in folder files\ligne_frais
                     deleteFilesById(ligne_id);
  
-                    // send delete request to api / remote server
+                    // then send delete request to api to delete the ligne frais in DB
                     $.ajax({
                         url: "http://localhost/M2L/api/ligne_frais/delete_ligne_frais.php",
                         type : "POST",
@@ -1323,6 +1368,7 @@
                         success : function(result) {
                             // re-load list
                             showLignesFraisFirstPage();
+                            $('#response').html("<div class='alert alert-success'>La ligne frais a été supprimée.</div>");
                         },
                         error: function(xhr, resp, text) {
                             $('#response').html("<div class='alert alert-danger'>Impossible de supprimer la ligne frais. Veuillez contacter l'administrateur.</div>");
@@ -1358,6 +1404,7 @@
     });
     // when 'all lignes frais' button was clicked
     $(document).on('click', '.all-ligne-frais-button', function(){
+        clearResponse();
         showLignesFraisFirstPage();
     });
 
@@ -1369,36 +1416,40 @@
         $.getJSON("http://localhost/M2L/api/ligne_frais/read_one_ligne_frais.php?id=" + id, function(data){
             // show HTML template
             showOneLigneFraisTemplate(data);
+            //clear response
+            clearResponse();
             // chage page title
-            changePageTitle("Info ligne frais");
+            changePageTitle("Info de la ligne frais");
             // prevent whole page reload
             return false;
         });
     });
-    // when a 'update lignefrais' button was clicked
+    // when 'Modifier' lignefrais button was clicked
     $(document).on('click', '.update-ligne-frais-button', function(){
+        clearResponse();
         //get id from button with data-id='val.id'
         var id = $(this).attr('data-id');
         // read one record based on given id
         $.getJSON("http://localhost/M2L/api/ligne_frais/read_one_ligne_frais.php?id=" + id, function(data){
+            
             updateOneLigneFrais(data);
         });
 
         //change title
-        changePageTitle("Mis à jour la ligne frais");
+        changePageTitle("Mettre à jour la ligne frais");
 
         // prevent whole page reload
         return false;
 
     });
-    
+    //when click button 'Sauvegarder' at the bottom of 'Mettre a jour la ligne frais'
     $(document).on('submit', '#update-ligne-frais-form', function(){
         //take values selected in options
         $("#type_trajet:selected").val();
         $("#multip_peage:selected").val();
         //create object from data filled in the form
         var data = $(this).serializeObject();
-        //take the name of the file selected by user
+        //take the name of the file selected by user, remove all fakepath added auto to the filename
         var peageJustif = $('#p_justificatif').val().replace(/C:\\fakepath\\/i, '');
         var repasJustif = $('#r_justificatif').val().replace(/C:\\fakepath\\/i, '');
         var hebergeJustif = $('#h_justificatif').val().replace(/C:\\fakepath\\/i, '');
@@ -1431,6 +1482,7 @@
 
                 var response = this.responseText;
                 if(response !==''){
+                    // if something done in 'delete_files.php' then alert it, if nothing changed, no alert.
                     alert(response);
                 }
             
@@ -1439,7 +1491,7 @@
         // Send request with data
         xhttp1.send(formData);
 
-        //second: uploading new files by XHTTP
+        //second: uploading new files by XHTTP to our folder assets/files/lignes_frais
         var formData1 = new FormData();
         formData1.append("id_user",$('#id_user').val());
         if(peageJustif){
@@ -1517,7 +1569,7 @@
                 }
             },
             callback: function (result) {
-                // delete request will be here
+                // request will be here
                 if(result==true){
  
                     // send request to api / remote server
@@ -1529,6 +1581,8 @@
                         success : function(result) {
                             // re-load list of lignes frais
                             showLignesFraisFirstPage();
+                            //response to user
+                            $('#response').html(`<div class='alert alert-success'>${result.message}</div>`);
                         },
                         error: function(xhr, resp, text) {
                             $('#response').html("<div class='alert alert-danger'>Impossible de valider la ligne frais. Veuillez contacter l'administrateur.</div>");
@@ -1545,7 +1599,7 @@
         // bootbox for good looking 'confirm pop up'
         bootbox.confirm({
         
-            message: "<h4>Vous êtes sur d'invalider la ligne frais ?</h4>",
+            message: "<h4>Vous êtes sur d'invalider cette ligne frais ?</h4>",
             buttons: {
                 confirm: {
                     label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -1569,6 +1623,7 @@
                         success : function(result) {
                             // re-load list of lignes frais
                             showLignesFraisFirstPage();
+                            $('#response').html(`<div class='alert alert-success'>La ligne frais a été invalidée !</div>`);
                         },
                         error: function(xhr, resp, text) {
                             $('#response').html("<div class='alert alert-danger'>Impossible d'invalider la ligne frais. Veuillez contacter l'administrateur.</div>");
@@ -1580,25 +1635,17 @@
         });
     });
     // ========== ADHERENT FUNCTIONS===============
-    //set id_user for adherent
+    //declare variable to set id_user for adherent to use in functions corresponding
     var adherent_id;
     // when 'gerer la ligne frais' button was clicked  by adherent
    $(document).on('click', '#gerer-ligne', function(){
         var jwt = getCookie('jwt');
         $.post("api/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
+            //set id adherent
             adherent_id = result.data.id;
-            
+            //show all lignes frais of cet adherent
             showLignesFraisFirstPageUser(adherent_id);
-            addBordereauControlButton(adherent_id);
-            // when a 'page' button was clicked
-            $(document).on('click', '.pagination li', function(){
-                // get json url
-                var json_url=$(this).find('a').attr('data-page');
-
-                // show list of lignes frais
-                showLignesFraisUser(json_url);
-                addBordereauControlButton(adherent_id);
-            });
+            clearResponse();
         })
         // on error/fail, tell the user he needs to login to show the account page
         .fail(function(resultat){
@@ -1607,10 +1654,21 @@
         });
 
     });
+
+    // when a 'page' button was clicked to show lignes frais of user by page
+    $(document).on('click', '.lignesUser li', function(){
+        // get json url
+        var json_url=$(this).find('a').attr('data-page');
+
+        // show list of lignes frais
+        showLignesFraisUser(json_url, adherent_id);
+        clearResponse();
+    });
+
     // when 'all lignes frais' button was clicked by adherent
     $(document).on('click', '.all-ligne-frais-button-user', function(){
         showLignesFraisFirstPageUser(adherent_id);
-        addBordereauControlButton(adherent_id);
+        clearResponse();
     });
 
      // when a 'search lignes frais' button was clicked by adherent
@@ -1627,9 +1685,9 @@
         $.getJSON("http://localhost/M2L/api/ligne_frais/search_ligne_frais_user.php?s=" + keywords + "&id=" + adherent_id, function(data){
             if(data.message){$('#response').html("<div class='alert alert-danger'>Aucune ligne frais trouvée ou la recherche invalide.</div>");}
             else{
-            // show template
-            showLignesFraisTemplateUser(data, keywords);
-            addBordereauControlButton(adherent_id);
+                // show template
+                showLignesFraisTemplateUser(data, keywords);
+                addBordereauControlButton(adherent_id);
             }
  
         });
@@ -1637,11 +1695,12 @@
         // prevent whole page reload
         return false;
     });
-    // when 'create ligne frais' button was clicked by adherent
+    // when 'Créer' ligne frais button was clicked by adherent
     $(document).on('click', '.create-ligne-frais-button-user', function(){
         changePageTitle("Créer la ligne frais"); 
         clearResponse();
         var html = createLigneFraisFormUser(adherent_id);
+        //rettrieve all motifs to put in select motifs form
         $.getJSON("http://localhost/M2L/api/motif/read.php", function(data){
             
             $.each(data.records, function(key, val){
@@ -1660,6 +1719,7 @@
                 </div>
                 </form>`;
             $('#content').html(html);
+            //on displaying form, at first, hide all div below
             $('.div-peage, .div-repas, .div-hebergement').hide();
         }); 
        
@@ -1712,7 +1772,7 @@
             success : function(result) {
                 // ligne frais was created, go back to list
                 showLignesFraisFirstPageUser(adherent_id);
-                addBordereauControlButton(adherent_id)
+                //addBordereauControlButton(adherent_id)
                 $('#response').html("<div class='alert alert-success'>La ligne frais a été créée.</div>");
             },
             error: function(xhr, resp, text) {
@@ -1730,10 +1790,11 @@
         var id = $(this).attr('data-id');
         // read record based on given ID
         $.getJSON("http://localhost/M2L/api/ligne_frais/read_one_ligne_frais.php?id=" + id, function(data){
+            clearResponse();
             // show HTML template
             showOneLigneFraisTemplateUser(data);
             // chage page title
-            changePageTitle("Info ligne frais");
+            changePageTitle("Info de la ligne frais");
             // prevent whole page reload
             return false;
         });
@@ -1741,15 +1802,18 @@
 
     // when a 'update lignefrais' button was clicked by adherent
     $(document).on('click', '.update-ligne-frais-button-user', function(){
+        clearResponse();
         //get id from button with data-id='val.id'
         var id = $(this).attr('data-id');
         // read one record based on given id
         $.getJSON("http://localhost/M2L/api/ligne_frais/read_one_ligne_frais.php?id=" + id, function(data){
+            
+            //show form to input data to update la ligne frais
             updateOneLigneFraisUser(data);
         });
 
         //change title
-        changePageTitle("Mis à jour la ligne frais");
+        changePageTitle("Mettre à jour la ligne frais");
 
         // prevent whole page reload
         return false;
@@ -1846,7 +1910,7 @@
                 //remove title
                 $('#page-title').text('');
 
-                // replace content div
+                // show button 'Toutes Lignes Frais'
                 showAllLignesFraisButtonUser();
             },
         
@@ -1869,7 +1933,7 @@
         // bootbox for good looking 'confirm pop up'
         bootbox.confirm({
         
-            message: "<h4>Vous êtes sur de supprimer ?</h4>",
+            message: "<h4>Vous êtes sur de supprimer cette ligne frais ?</h4>",
             buttons: {
                 confirm: {
                     label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -1886,7 +1950,7 @@
                     // delete files of a ligne frais in folder files\ligne_frais
                     deleteFilesById(ligne_id);
     
-                    // send delete request to api / remote server
+                    // send delete request to api / remote server to delete in DB
                     $.ajax({
                         url: "http://localhost/M2L/api/ligne_frais/delete_ligne_frais.php",
                         type : "POST",
@@ -1895,7 +1959,7 @@
                         success : function(result) {
                             // re-load list
                             showLignesFraisFirstPageUser(adherent_id);
-                            addBordereauControlButton(adherent_id);
+                            $('#response').html("<div class='alert alert-success'>Cette ligne frais a été supprimée! </div>");
                         },
                         error: function(xhr, resp, text) {
                             $('#response').html("<div class='alert alert-danger'>Impossible de supprimer la ligne frais. Veuillez contacter l'administrateur.</div>");
@@ -1913,12 +1977,12 @@
          showBordereau(adherent_id);
      });
 
-    // when click to retrieve bordereau in pdf and send to server 
+    // when click: retrieve bordereau in pdf and send to server 
     $(document).on('click', '#send_getPDF', function(){
           // bootbox for good looking 'confirm pop up'
         bootbox.confirm({
         
-            message: "<h4>Vous êtes sur d'envoyer votre bordereau ?</h4>",
+            message: "<h4>Vous êtes sûr d'envoyer votre bordereau ?</h4>",
             buttons: {
                 confirm: {
                     label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -1932,7 +1996,7 @@
             callback: function (result) {
                 //if choice = yes
                 if(result==true){
-                    // save bordereau on server and download bordereau on user's end
+                    // save bordereau on server in folder files/bordereaux and download bordereau on user's end
                     sendAndGetPDF(adherent_id);
                     // check if bordereau already exists in DB by using 'read one record based on given id'
                     $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(data){
@@ -1951,8 +2015,7 @@
                                 success : function(result) {
                                     // re-load list
                                     showLignesFraisFirstPageUser(adherent_id);
-                                    addBordereauControlButton(adherent_id);
-                                    alert("Vous pouvez modifier et renvoyer votre bordereau jusqu'à la validation du bordereau.");
+                                    $('#response').html("<div class='alert alert-danger'>Action réussie. Vous pouvez modifier et renvoyer votre bordereau jusqu'à la validation du bordereau. </div>");
                                 },
                                 error: function(xhr, resp, text) {
                                     $('#response').html("<div class='alert alert-danger'>Impossible de sauvegarder votre bordereau dans la base de données. Veuillez contacter l'administrateur.</div>");
@@ -1962,7 +2025,7 @@
                         }else{
                             // re-load list
                             showLignesFraisFirstPageUser(adherent_id);
-                            addBordereauControlButton(adherent_id);
+                            $('#response').html("<div class='alert alert-danger'>Action réussie. Vous pouvez modifier et renvoyer votre bordereau jusqu'à la validation du bordereau. </div>");
                         }
                     });  
                     
@@ -1972,24 +2035,27 @@
 
     });
 
-    // when a 'show bordereau' button was clicked
+    // when a 'voir bordereau validé' button was clicked
     $(document).on('click', '.show-bordereau-button-user', function(){
         clearResponse();
         changePageTitle('Votre bordereau validé');
+        //show file saved in files/bordereaux corresponding to this adherent_id (piece HTML in bordereau.js)
         showBordereauValide(adherent_id);
     });
 
-    // when click getPDF button
+    // when click 'téléchager en PDF' button at the bottom of 'Votre bordereau validé'
     $(document).on('click', '#getPDF', function(){
         //save validated bordereau on user's computer 
         var nomFichier = "bordereau_validé.pdf";
+        //function to export from img to pdf file and save on computer of user in page.js
         getPDF(nomFichier);        
     });
 
-    // when a 'show cerfa' button was clicked
+    // when a 'voir CERFA' button was clicked
     $(document).on('click', '.show-cerfa-button-user', function(){
         clearResponse();
         changePageTitle('Votre CERFA');
+        //show file saved in files/cerfa corresponding to this adherent_id (piece HTML in cerfa.js)
         showCERFAValide(adherent_id);
     });
 
@@ -1999,17 +2065,16 @@
         // show list of motifs
         showBordereauxFirstPage(); 
         clearResponse();
+    });
 
-        // when a 'page' button was clicked
-        $(document).on('click', '.pagination li', function(){
-            // get json url
-            var json_url=$(this).find('a').attr('data-page');
+    // when a 'page of bordereau' button was clicked
+    $(document).on('click', '.bordereau li', function(){
+        // get json url
+        var json_url=$(this).find('a').attr('data-page');
 
-            // show list
-            showBordereaux(json_url);
-            clearResponse();
-        });
-
+        // show list
+        showBordereaux(json_url);
+        clearResponse();
     });
 
     // when a 'lire' bordereau button was clicked
@@ -2027,8 +2092,9 @@
         });
     });
 
-    // when a 'update bordereau' button was clicked
+    // when a 'Modifier' bordereau button was clicked
     $(document).on('click', '.update-bordereau-button', function(){
+        clearResponse();
         //get bordereau id from button with data-id='val.id' in form showBordereaux()
         var id = $(this).attr('data-id');
         // read one record based on given bordereau id
@@ -2037,7 +2103,7 @@
         });
 
         //change title
-        changePageTitle("Mis à jour le bordereau");
+        changePageTitle("Mettre à jour le bordereau");
 
         // prevent whole page reload
         return false;
@@ -2049,7 +2115,7 @@
         $('.div-cerfa').show('slow');
     });
 
-    // on submit update bordereau form
+    // on submit update bordereau form _ for admin role
     $(document).on('submit', '#update-bordereau-form', function(){
         //create object from data filled in the form
         var data = $(this).serializeObject();
@@ -2090,10 +2156,11 @@
         xhttp1.send(formData);
 
         /********************/
-        //second: uploading new files by XHTTP
+        //second: uploading new files to DB by XHTTP
         var formData1 = new FormData();
         //add id_user in formData to post
         formData1.append("id_user",$('#id_user').val());
+        //if new file of bordereau and cerfa was added to thr form
         if(bordereau){
             var file_bordereau = document.getElementById("src_b").files;
             formData1.append("src_bordereau", file_bordereau[0]);
@@ -2119,7 +2186,7 @@
         xhttp.send(formData1);
 
         /*************************/
-        // third:post JSON string above to file controller
+        // third:post JSON string above to file controller to make changes in DB
         $.ajax({
             url: "api/bordereau/modify_bordereau.php",
             type : "POST",
@@ -2133,7 +2200,7 @@
                 //remove title
                 $('#page-title').text('');
 
-                // replace content div
+                // show button 'tous bordereaux'
                 showAllBordereauxButton();
             },
         
@@ -2188,7 +2255,7 @@
         // bootbox for good looking 'confirm pop up'
         bootbox.confirm({
         
-            message: "<h4>Vous êtes sur de supprimer ce bordereau?</h4>",
+            message: "<h4>Vous êtes sûr de supprimer ce bordereau?</h4>",
             buttons: {
                 confirm: {
                     label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -2205,7 +2272,7 @@
                      // delete files of bordereau in folder files\bordereaux
                      deleteFilesByIdBordereau(bordereau_id);
 
-                    // send delete request to api / remote server
+                    // send delete request to api / remote server to delete bordereau in DB
                     $.ajax({
                         url: "http://localhost/M2L/api/bordereau/delete_bordereau.php",
                         type : "POST",
@@ -2227,7 +2294,7 @@
         });
     });
 
-    // when 'valider bordereau' button was clicked to convert bordereau into adhérent
+    // when 'valider bordereau' button was clicked to validate le bordereau and all its lignes frais corresponding
     $(document).on('click', '.valider-bordereau-button', function(){
         var bordereau_id = $(this).attr('data-id');
         // bootbox for good looking 'confirm pop up'
@@ -2248,7 +2315,7 @@
                 // valider request will be here
                 if(result==true){
                     
-                    // send request to api to change status of bordereau: become etre_validé
+                    // send request to api to change status of bordereau: become etre_validé ou 'etre_valide = 1' in DB
                     $.ajax({
                         url: "http://localhost/M2L/api/bordereau/change_status.php",
                         type : "POST",
@@ -2257,6 +2324,7 @@
                         success : function(result) {
                             // re-load list of bordereaux
                             showBordereauxFirstPage();
+                            $('#response').html("<div class='alert alert-success'>Le statut du bordereau a été changé à 'validé'</div>");
                         },
                         error: function(xhr, resp, text) {
                             $('#response').html("<div class='alert alert-danger'>Impossible de valider le bordereau. Veuillez contacter l'administrateur.</div>");
@@ -2266,12 +2334,12 @@
                     $.getJSON("http://localhost/M2L/api/bordereau/read_one_bordereau.php?id=" + bordereau_id, function(data){
                         //retrieve all lignes frais by id user
                         $.getJSON("http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id=" + data.id_user, function(da){
-                            
+                            var counter = 0;
                             // loop through returned list of data
                             $.each(da.records, function(key, val) {
                                 if(val.etre_valide !== '1'){
                                     $.post("http://localhost/M2L/api/ligne_frais/change_status.php", JSON.stringify({ id: val.id, valide: 1 })).done(function(result) {
-                                        
+                                        counter = counter + 1; 
                                     })
                                     // on error/fail, tell the user
                                     .fail(function(resultat){
@@ -2280,7 +2348,7 @@
                                 }
                                 
                             });
-                            $('#response').html(`<div class='alert alert-success'>La(les) ligne(s) frais concernée(s) et le bordereau ont été déjà validée(s).</div>`);
+                            $('#response').append(`<div class='alert alert-success'>${counter} ligne(s) frais concernée(s) ont été déjà validée(s).</div>`);
                         }); 
                     });
                 
@@ -2294,7 +2362,7 @@
         // bootbox for good looking 'confirm pop up'
         bootbox.confirm({
         
-            message: "<h4>Vous êtes sur d'invalider le bordereau ?</h4>",
+            message: "<h4>Vous êtes sûr d'invalider le bordereau ?</h4>",
             buttons: {
                 confirm: {
                     label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -2309,7 +2377,7 @@
                 // delete request will be here
                 if(result==true){
 
-                    // send request to api / remote server
+                    // send request to api / remote server to change etre_valide = null in DB
                     $.ajax({
                         url: "http://localhost/M2L/api/bordereau/change_status.php",
                         type : "POST",
@@ -2329,7 +2397,7 @@
             }
         });
     });
-    //when click create bordereau button
+    //when click Créer bordereau button
     $(document).on('click', '.create-bordereau-button', function(){
         changePageTitle("Créer le bordereau pour l'utilisateur"); 
         clearResponse();
@@ -2338,55 +2406,81 @@
     // when 'Voir ses lignes frais' button was clicked 
     $(document).on('click', '.all-ligne-frais-button-of-user', function(){
         adherent_id = $('#create-bordereau-form').find(":input[name='id_user']").val();
+        //if user don't input id_user
         if(!adherent_id){
-           //message tell user to input Id_user
+           //message remind user to input Id_user
             $('#response').html("<div class='alert alert-danger'>Veuillez choisir id d'utilisateur!</div>");
         
         }else{
-            
-            $.getJSON("http://localhost/M2L/api/user/search_user.php?s=adherent", function(da){
-                $.each(da.records, function(key, val){
-                    if(val.id != adherent_id){
-                        $('#response').html(`<div class='alert alert-danger'>L'utilisateur ${adherent_id} n'est pas un adhérent!</div>`);
-                    }else{
-                        showLignesFraisFirstPageUser(adherent_id);
-                        addBordereauControlButton(adherent_id);
-                    }
+            //check if id_user input is valid or not
+            $.getJSON("http://localhost/M2L/api/user/read_one_user.php?id="+adherent_id, function(da){
+                //if cant find that id_user or if found but role is different than 'adherent'
+                if(!da.id || (da.id && da.role != 'adherent')){
+                    //display response
+                    $('#response').html(`<div class='alert alert-danger'>L'utilisateur ${adherent_id} n'est pas un adhérent!</div>`);
+                }else{
+                    //check if this id_user has any lignes frais
+                    $.getJSON("http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id="+adherent_id, function(data){
+                        //if found then display all lignes frais of that user
+                        if(data.records){
+                            clearResponse();
+                            showLignesFraisFirstPageUser(adherent_id);
+                            addBordereauControlButton(adherent_id);
+                        }else if(data.message){
+                            //if not found, tell admin that 'lignes frais pas encore déclarée'
+                            $('#response').html(`<div class='alert alert-danger'>L'utilisateur ${adherent_id} n'a pas encore déclaré ses lignes frais.</div>`);
+                        }
+                    });
                     
-                });
+                }
+                    
+            
             });
         } 
         // prevent whole page reload
         return false;
         
     });
-    // on submitting form create bordereau
+    // on submitting form (click 'Créer Bordereau' button in form Créer le bordereau pour l'utilisateur)
     $(document).on('submit', '#create-bordereau-form', function(){
          // get input data 
          adherent_id = $(this).find(":input[name='id_user']").val();
-         // get data from the api based on search keywords = adherent_id
-        $.getJSON("http://localhost/M2L/api/bordereau/search_bordereau.php?s=" + adherent_id, function(data){
-            if(data.message){
-                $.getJSON("http://localhost/M2L/api/user/search_user.php?s=adherent", function(da){
-                    $.each(da.records, function(key, val){
-                        if(val.id != adherent_id){
-                            $('#response').html(`<div class='alert alert-danger'>L'utilisateur ${adherent_id} n'est pas un adhérent!</div>`);
-                        }else{
-                            clearResponse();
-                            changePageTitle(`Bordereau de l'utilisateur ${adherent_id}`);
-                            showBordereau(adherent_id);
+         // check if id_user input is valid or not
+         $.getJSON("http://localhost/M2L/api/user/read_one_user.php?id="+adherent_id, function(da){
+                //if cant find that id_user or if found but role is different than 'adherent'
+                if(!da.id || (da.id && da.role != 'adherent')){
+                    //display response
+                    $('#response').html(`<div class='alert alert-danger'>L'utilisateur ${adherent_id} n'est pas un adhérent!</div>`);
+                }else{
+                    //check if this id_user has any lignes frais
+                    $.getJSON("http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id="+adherent_id, function(data){
+                        //if found his lignes frais then check if this user has bordereau or not yet
+                        if(data.records){
+                            $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(d){
+                                //if not yet created his bordereau then show bordereau to save in system
+                                if(d.message){
+                                    clearResponse();
+                                    changePageTitle(`Bordereau de l'utilisateur ${adherent_id}`);
+                                    showBordereauAdmin(adherent_id);
+                                }else{
+                                     // if bordereau is already created, then show form to update a bordereau 
+                                     updateOneBordereau(d);
+                                     changePageTitle(`Modifier le bordereau de l'utilisateur ${adherent_id}`);
+                                    $('#response').html(`<div class='alert alert-danger'>Le bordereau de l'utilisateur ${adherent_id} existe déjà.</div>`);
+                                }
+                            });
+                            
+                        }else if(data.message){
+                            //if not found, tell admin that 'lignes frais pas encore déclarée'
+                            $('#response').html(`<div class='alert alert-danger'>L'utilisateur ${adherent_id} n'a pas encore déclaré ses lignes frais. Créer ses lignes frais tout d'abord! </div>`);
                         }
-                        
                     });
-                });
-            }else{
-                // template in bordereaux.js
-                showBordereauxTemplate(data, adherent_id);
-                $('#response').html(`<div class='alert alert-danger'>Le bordereau de l'utilisateur ${adherent_id} existe déjà.</div>`)
-            }
+                    
+                }
+                    
             
-
-        });
+         });
+        
         // prevent whole page reload
         return false;
     });
@@ -2405,7 +2499,7 @@
         // bootbox for good looking 'confirm pop up'
       bootbox.confirm({
       
-          message: "<h4>Vous êtes sur de sauvegarder le CERFA et le télécharger ?</h4>",
+          message: "<h4>Vous êtes sûr de sauvegarder le CERFA et le télécharger ?</h4>",
           buttons: {
               confirm: {
                   label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -2438,17 +2532,17 @@
                         success : function(result) {
                             // re-load list of bordereaux
                             showBordereauxFirstPage();
-                            $('#response').html(`<div class='alert alert-success'>${result.message}</div>`);  
+                            $('#response').append(`<div class='alert alert-success'>${result.message}</div>`);  
                         },
                         error: function(xhr, resp, text) {
-                            $('#response').html("<div class='alert alert-danger'>Impossible de sauvegarder le CERFA dans la base de données. Veuillez contacter l'administrateur.</div>");
+                            $('#response').append("<div class='alert alert-danger'>Impossible de sauvegarder le CERFA dans la base de données. Veuillez contacter l'administrateur.</div>");
                         }
                     });
 
                     }else{
                         // re-load list
                         showBordereauxFirstPage();
-                        $('#response').html(`<div class='alert alert-success'>Le nouveau CERFA a été bien enregistré dans le système</div>`);
+                        $('#response').append(`<div class='alert alert-success'>Le nouveau CERFA a été bien enregistré dans le système</div>`);
                         
                     }
                 });  
@@ -2461,22 +2555,23 @@
  
     //========================TRESORIER FUNCTIONS ======================
     $(document).on('click', '#consulter-bordereau', function(){
-        // show list of motifs
+        // show list of bordereaux and change title
         showBordereauxFirstPageTresorier(); 
+        //clear previous response
         clearResponse();
 
-        // when a 'page' button was clicked
-        $(document).on('click', '.pagination li', function(){
-            // get json url
-            var json_url=$(this).find('a').attr('data-page');
-
-            // show list of motifs
-            showBordereauxTresorier(json_url);
-            clearResponse();
-        });
+        
+    });
+    // when a 'page' button was clicked
+    $(document).on('click', '.bordereaux li', function(){
+        // get json url
+        var json_url=$(this).find('a').attr('data-page');
+        // show list of motifs
+        showBordereauxTresorier(json_url);
+        clearResponse();
     });
 
-    // when a 'lire' bordereau button was clicked by tresorier
+    // when a 'Lire' bordereau button was clicked by tresorier
     $(document).on('click', '.read-one-bordereau-button-tresorier', function(){
         // get demandeur id
         var id = $(this).attr('data-id');
@@ -2486,19 +2581,19 @@
             showOneBordereauTemplateTresorier(data);
             // chage page title
             changePageTitle("Info du bordereau");
-            // prevent whole page reload
-            return false;
         });
+        // prevent whole page reload
+        return false;
     });
     
-    // when 'all bordereaux' button was clicked by tresorier or retourner à la liste
+    // when 'Tous bordereaux' button was clicked by tresorier or retourner à la liste
     $(document).on('click', '.all-bordereaux-button-tresorier', function(){
         //show list all bordereaux
         showBordereauxFirstPageTresorier();
         clearResponse();
     });
 
-    //onclick : show CERFA form button by tresorier in case edit or create new CERFA
+    //onclick : show CERFA form button by tresorier (button 'Modifier CERFA' or 'Créer CERFA') in case edit or create new CERFA
     $(document).on('click', '.show-cerfa-form-button-tresorier', function(){
         adherent_id = $(this).attr('data-id');
         clearResponse();
@@ -2511,7 +2606,7 @@
         // bootbox for good looking 'confirm pop up'
       bootbox.confirm({
       
-          message: "<h4>Vous êtes sur de sauvegarder le CERFA, le télécharger et l'envoyer à l'adhérent ?</h4>",
+          message: "<h4>Vous êtes sûr de sauvegarder le CERFA, le télécharger et l'envoyer à l'adhérent ?</h4>",
           buttons: {
               confirm: {
                   label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -2527,9 +2622,8 @@
               if(result==true){
                 // save cerfa on server and download cerfa on user's end
                 sendAndGetCERFA(adherent_id);
-                //send email to inform adherent about the cerfa using ajax
-                //set response added to inform email sent
-                var re = '';
+                //send email to inform adherent about the cerfa is ready using ajax
+                var response = '';
                 $.getJSON("http://localhost/M2L/api/user/read_one_user.php?id=" + adherent_id, function(d){
 
                     $.ajax({
@@ -2538,12 +2632,12 @@
                         dataType : 'json',
                         data : { email: d.email },
                         success : function(result) {
-                            re += result;
-                            $('#response').html(`<div class='alert alert-success'>${re}</div>`);
+                            response += `Email envoyé à l'utilisateur. ` + result;
+                            $('#response').append(`<div class='alert alert-success'>${response}</div>`);
                         },
                         error: function(xhr, resp, text) {
-                            re += `Pas possible d'envoyer CERFA à l'adhérent.`;
-                            $('#response').html(`<div class='alert alert-danger'>${re}</div>`);
+                            response += `Impossible d'envoyer le CERFA à l'adhérent.`;
+                            $('#response').append(`<div class='alert alert-danger'>${response}</div>`);
                         }
                     });
                 });
@@ -2573,7 +2667,7 @@
                     });
 
                     }else{
-                        // re-load list
+                        // if already created, pretend that its there!
                         showBordereauxFirstPageTresorier();
                         $('#response').append(`<div class='alert alert-success'>Le nouveau CERFA a été bien enregistré dans le système</div>`);
                         
@@ -2592,7 +2686,7 @@
         // bootbox for good looking 'confirm pop up'
         bootbox.confirm({
         
-            message: "<h4>Vous êtes sur d'invalider ce bordereau ?</h4>",
+            message: "<h4>Vous êtes sûr d'invalider ce bordereau ?</h4>",
             buttons: {
                 confirm: {
                     label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -2607,7 +2701,7 @@
                 // delete request will be here
                 if(result==true){
 
-                    // send request to api / remote server
+                    // send request to api / remote server to change 'etre_valide= null'
                     $.ajax({
                         url: "http://localhost/M2L/api/bordereau/change_status.php",
                         type : "POST",
@@ -2630,11 +2724,12 @@
    
     // when 'valider bordereau' button was clicked by tresorier to complete "la partie conservée pour l'association"
     $(document).on('click', '.valider-bordereau-button-tresorier', function(){
+        clearResponse();
         adherent_id = $(this).attr('data-id');
         // bootbox for good looking 'confirm pop up'
         bootbox.confirm({
         
-            message: "<h4>Vous êtes sur d'accéder à ce bordereau pour le valider ?</h4>",
+            message: "<h4>Vous êtes sûr d'accéder à ce bordereau pour le valider ?</h4>",
             buttons: {
                 confirm: {
                     label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -2648,7 +2743,7 @@
             callback: function (result) {
                 // valider request will be here
                 if(result==true){
-                    //display form bordereau including party input tresorier info
+                    //display form bordereau including the part reserved to input trésorier info
                     showBordereauTresorier(adherent_id);
                 }
             }
@@ -2660,7 +2755,7 @@
          // bootbox for good looking 'confirm pop up'
        bootbox.confirm({
        
-           message: "<h4>Vous êtes sur de valider ce bordereau et toutes ses lignes frais ?</h4>",
+           message: "<h4>Vous êtes sûr de valider ce bordereau et toutes ses lignes frais ?</h4>",
            buttons: {
                confirm: {
                    label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -2678,18 +2773,20 @@
                    // save bordereau on server and download bordereau on user's end
                    sendAndGetPDF(adherent_id);
 
-                   //retrieve all lignes frais by id user
+                   //retrieve all lignes frais by id user to change status of all lignes frais corresponding 'etre_valide = 1'
                    $.getJSON("http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id=" + adherent_id, function(da){
-                            
+                       //set counter to count number of lignes frais affected
+                        var counter = 0;
                         // loop through returned list of data
                         $.each(da.records, function(key, val) {
                             if(val.etre_valide !== '1'){
                                 $.post("http://localhost/M2L/api/ligne_frais/change_status.php", JSON.stringify({ id: val.id, valide: 1 })).done(function(result) {
-                                    
+                                    //if change status succeeded then accumulate counter
+                                    counter = counter + 1; 
                                 })
                                 // on error/fail, tell the user
                                 .fail(function(resultat){
-                                    $('#response').html("<div class='alert alert-danger'>Impossible de valider certaine ligne frais.</div>");
+                                    $('#response').append("<div class='alert alert-danger'>Impossible de valider certaine ligne frais.</div>");
                                 });
                             }
                             
@@ -2702,14 +2799,14 @@
                                 dataType : 'json',
                                 data : JSON.stringify({ id: data.id, valide: 1}),
                                 success : function(result) {
-                                    clearResponse();
+                                    
                                     //return to list of all bordereaux
                                     showBordereauxFirstPageTresorier();
-                                    $('#response').html(`<div class='alert alert-success'>Le bordereau et ses lignes frais ont été déjà bien validés !</div>`);
+                                    $('#response').append(`<div class='alert alert-success'>Le bordereau et ${counter} lignes frais concernées ont été déjà validés !</div>`);
                                        
                                 },
                                 error: function(xhr, resp, text) {
-                                    $('#response').html("<div class='alert alert-danger'>Impossible de valider le bordereau. Veuillez contacter l'administrateur.</div>");
+                                    $('#response').append("<div class='alert alert-danger'>Impossible de valider le bordereau. Veuillez contacter l'administrateur.</div>");
                                 }
                             });
 
@@ -2726,52 +2823,34 @@
    // on clicking on button 'mdp oublié'
    $(document).on('click', '#button_mdp_oublie', function(e){
         $('#email_of_user').removeAttr('hidden');
-        //$('#mdp_oublie_form').append(`<button type="submit" class="btn btn-danger w-100" id="sendLink"> Envoyez-moi le lien</button>`);
         $('#button_mdp_oublie').remove();
-        $('#addButton').append(`<button type="submit" class="btn btn-danger w-100" id="sendLink"> Envoyez-moi le lien</button>`);
+        $('#addButton').append(`<button type="submit" class="btn btn-danger w-100" id="sendLink"> Envoyez-moi un mail</button>`);
     });
 
-    // on clicking on button 'mdp oublié'
-   $(document).on('click', '#sendLink', function(e){
-    // to do something here!!!!!!
-   });
-//================ PAS ENCORE BIEN FONCTIONNE================
-   // on clicking on button 'mdp oublié'
-   /*$(document).on('submit', '#mdp_oublie_form', function(e){
+    // on clicking on button 'Envoyez-moi un mail'
+   $(document).on('submit', '#mdp_oublie_form', function(e){
         //stop form from functioning as usual
         e.preventDefault();
         //search to see if the email exists in DB
         var email = $('#email_of_user').val();
-        $.getJSON("http://localhost/M2L/api/user/search_user.php?s="+email, function(da){
-            var send=false;
-            $.each(da.records, function(key, val){
-                if(val.email === email){
-                    send=true;    
-                    alert(send);
-                } 
-            });
-            if(send==true){
-                alert(send);
-                /*$('#mdp_oublie_form').attr('action', 'forms/contact_user.php');
-                $('#mdp_oublie_form').attr('method', 'post');
-                let thisForm = this;
-                let action = thisForm.getAttribute('action');
-                let formData = new FormData(thisForm);
-                //formData.set('email', email);
-                //display or hide <div> under the form to inform user of result
-                thisForm.querySelector('.loading').classList.add('d-block');
-                thisForm.querySelector('.error-message').classList.remove('d-block');
-                thisForm.querySelector('.sent-message').classList.remove('d-block');
-                //send mail by function created in page.js
-                php_email_form_submit(thisForm, action, formData);*/
-            /*}else{
-                alert(`L'email n'est pas encore déclaré dans la base de données`);
-            }
+        var action = "forms/contact_user.php";
+        var thisForm = document.getElementById("mdp_oublie_form");
+        var formData = new FormData(document.getElementById("mdp_oublie_form"));
+       
+        $.post("http://localhost/M2L/api/user/search_email_user.php", JSON.stringify({ email: email })).done(function(result) {
+            $('.alert').remove();
+            php_email_form_submit(thisForm, action, formData);  
+            //to avoid the authentification of email input of PHPEmail funciton, we dont 'catch error' in this email-sending-form, we suppose that if email exists in DB -> its real!
+            $('#mdp_oublie_form').append(`<div class='alert alert-success my-3'>Le lien à changer votre mot de passe a été envoyé. Veuillez vérifier votre boite mail!</div>`);
+        })
+        // on error/fail, tell the user
+        .fail(function(resultat){
+            $('.alert').remove();
+            $('#mdp_oublie_form').append(`<div class='alert alert-danger my-3'>L'email saisi ne correspond à aucun utilisateur dans notre système.</div>`);
         });
-        
+        //prevent re-load page
         return false;
-
-    });*/
+   });
 
     // on submiting update pw form
    $(document).on('submit', '#update_pw_form', function(){
@@ -2788,17 +2867,19 @@
             dataType : 'json',
             data : JSON.stringify({ email: email, mdp: mdp}),
             success : function(result){
-                
+                // redirect to home page of M2L
                 window.location.href = "http://localhost/M2L/index.html";
+                // pop alert telling user
                 alert('Votre nouveau mot de passe a été bien sauvegardé! Veuillez vous connecter pour accéder à votre compte!');
             },
             error: function(xhr, resp, text){
-                // on error, tell the user login has failed & empty the input boxes
+                // on error of email input (email not exists), tell the user login has failed & empty the input boxes
                 $('#response').html(`<div class='alert alert-danger'>Echec de la mise à jour du mot de passe. Veuillez vérifier vos saisies!</div>`);
             
                 }
             });
         }else{
+            //en cas le mdp input and the mdp confirm are not the same
             $('#response').html(`<div class='alert alert-danger'>Echec de la mise à jour du mot de passe. Veuillez vérifier vos saisies!</div>`);
         }
    });

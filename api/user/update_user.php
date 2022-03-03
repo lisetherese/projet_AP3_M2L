@@ -47,14 +47,14 @@ if($jwt){
         $user->niveau_tarif = $data->niveau_tarif;
         $user->email = $data->email;
         $user->id = $decoded->data->id; //keep id as id_user in $token['data'=>"id": id_user]
-        if ($data->mdp !== null || $data->mdp !== ''){
+        if (!empty($data->mdp)){
             $user->mdp = $data->mdp;
         }
         //set variable to check if email of new user already existed or not, to make email of user is unique in BD
         $email_exists = $user->checkEmailExists();
 
         // update the user record
-        if(!$email_exists && $user->update()){
+        if($email_exists && $user->update()){
             // we need to re-generate jwt because user details might be different
             $token = array(
                 "iat" => $issued_at,
@@ -85,7 +85,7 @@ if($jwt){
         // message if unable to update user
         else{
             // set response code
-            //http_response_code(401);
+            http_response_code(401);
         
             // show error message
             echo json_encode(array("message" => "Impossible de mettre à jour l'utilisateur car l'adresse email déjà utilisé."));
@@ -110,7 +110,7 @@ if($jwt){
 else{
  
     // set response code
-    //http_response_code(401);
+    http_response_code(401);
  
     // tell the user access denied
     echo json_encode(array("message" => "Accès refusé."));

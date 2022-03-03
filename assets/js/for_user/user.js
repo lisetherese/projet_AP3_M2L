@@ -76,7 +76,7 @@ function showUsersTemplate(data, keywords){
         read_users_html+=`</table>`;
         // pagination
         if(data.paging){
-            read_users_html+="<nav aria-label='search users pages'><ul class='pagination float-left margin-zero padding-bottom-2em'>";
+            read_users_html+="<nav aria-label='search users pages'><ul class='pagination users float-left margin-zero padding-bottom-2em'>";
         
                 // first page
                 if(data.paging.first!=""){

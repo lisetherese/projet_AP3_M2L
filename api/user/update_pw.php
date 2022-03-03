@@ -27,14 +27,6 @@ $user->mdp = $data->mdp;
 $email_exists = $user->checkEmailExists();
 $pw_updated = $user->pwUpdated();
  
-// generate json web token
-/*include_once '../config/core.php';
-include_once '../libs/BeforeValidException.php';
-include_once '../libs/ExpiredException.php';
-include_once '../libs/SignatureInvalidException.php';
-include_once '../libs/JWT.php';
-use \Firebase\JWT\JWT;*/
- 
 // check if email exists and if password input in brut is correct to passeword hashed
 if($email_exists && $pw_updated){ //built-in function password_verify — Verifies that a password matches a hash
  

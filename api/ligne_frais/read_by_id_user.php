@@ -59,8 +59,8 @@ if($num>0){
   
   
     // include paging
-    $total_rows=$ligne_frais->count();
-    $page_url="{$home_url}ligne_frais/read_paging_lignes.php?";
+    $total_rows=$ligne_frais->countUser();
+    $page_url="{$home_url}ligne_frais/read_by_id_user.php?id={$ligne_frais->id_user}&";
     $paging=$utilities->getPaging($page, $total_rows, $records_per_page, $page_url);
     $lignes_frais_arr["paging"]=$paging;
   
@@ -78,7 +78,7 @@ else{
   
     // tell the ligne_frais ligne_fraiss does not exist
     echo json_encode(
-        array("message" => "Aucune ligne frais trouvée.")
+        array("message" => "Aucune ligne frais trouvée pour l'utilisateur {$ligne_frais->id_user}.")
     );
 }
 

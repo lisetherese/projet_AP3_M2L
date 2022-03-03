@@ -32,7 +32,7 @@ if($ligne_frais->validerLigneFrais()){
     http_response_code(200);
             
     // response in json format
-    echo json_encode(array("message" => "La ligne frais a bien été modifiée! ."));
+    echo json_encode(array("message" => "La ligne frais a bien été validée! "));
 }
 // message if unable to update ligne_frais
 else{

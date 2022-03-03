@@ -28,6 +28,7 @@ if($result){
         "id" => $bordereau->id,
         "src_bordereau" => $bordereau->src_bordereau,
         "cerfa" => $bordereau->cerfa,
+        "id_user" =>$bordereau->id_user,
         "etre_valide" => $bordereau->etre_valide
     );
     

@@ -81,7 +81,7 @@ function showLiguesTemplate(data, keywords){
         read_Ligues_html+=`</table>`;
         // pagination
         if(data.paging){
-            read_Ligues_html+="<nav aria-label='search ligues pages'><ul class='pagination float-left margin-zero padding-bottom-2em'>";
+            read_Ligues_html+="<nav aria-label='search ligues pages'><ul class='pagination ligues float-left margin-zero padding-bottom-2em'>";
         
                 // first page
                 if(data.paging.first!=""){

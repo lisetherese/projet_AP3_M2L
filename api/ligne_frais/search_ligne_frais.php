@@ -42,6 +42,7 @@ if($num>0){
             "date_ligne_frais" => $date_ligne_frais,
             "trajet" => $trajet,
             "km" =>$km,
+            "id_user" =>$id_utilisateur,
             "km_valide" => $km_valide,
             "etre_valide" => $etre_valide
         );

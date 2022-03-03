@@ -68,13 +68,21 @@ function showHomePage(role, email){
     // validate jwt to verify access, retrieve object jwt contains all datat from cookie
     var jwt = getCookie('jwt');
     $.post("api/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
+        //set welcome phrase qu'user ou que tresorier
+        var role_phrase = '';
+        if(role.startsWith('a') || role.startsWith('u')){
+            role_phrase = `qu'`;
+        }else{role_phrase = `que `;}
+
+        //role display in full
+        if(role=='user'){ role='utilisateur';}else if(role=='admin'){role='administrateur';}
 
         // if valid, show homepage
         var html = `
             <div class="card">
-                <div class="card-header">Bienvenue `+ email +` à la Maison des ligues!</div>
+                <div class="card-header">Bienvenue `+ email +` à la <strong>Maison des ligues</strong>!</div>
                 <div class="card-body">
-                    <h5 class="card-title">Vous êtes connecté en tant que `+ role +` .</h5>
+                    <h5 class="card-title">Vous êtes connecté en tant `+ role_phrase + role +` .</h5>
                     <p class="card-text"></p>
                 </div>
             </div>

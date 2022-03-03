@@ -21,6 +21,7 @@ $ligne_frais = new LigneFrais($db);
 // get keywords
 $keywords=isset($_GET["s"]) ? $_GET["s"] : "";
 $user_id =isset($_GET["id"]) ? $_GET["id"] : "";
+
 // query ligne_fraiss
 $stmt = $ligne_frais->searchByUser($keywords,$user_id);
 $num = $stmt->rowCount();

@@ -102,7 +102,7 @@ function showLignesFraisTemplateUser(data, keywords){
         read_lignes_frais_html+=`</td></tr></table>`;
         // pagination
         if(data.paging){
-            read_lignes_frais_html+="<nav aria-label='search ligne frais pages'><ul class='pagination float-left margin-zero padding-bottom-2em'>";
+            read_lignes_frais_html+="<nav aria-label='search ligne frais pages'><ul class='pagination lignesUser float-left margin-zero padding-bottom-2em'>";
         
                 // first page
                 if(data.paging.first!=""){
@@ -136,11 +136,11 @@ function showLignesFraisTemplateUser(data, keywords){
 
 function showLignesFraisFirstPageUser(id_user){
     var json_url="http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id="+id_user;
-    showLignesFraisUser(json_url);
+    showLignesFraisUser(json_url, id_user);
 }
 
 // function to show list of lignes_frais
-function showLignesFraisUser(json_url){
+function showLignesFraisUser(json_url, id_user){
 
     // get list of lignes_frais from the API
     $.getJSON(json_url, function(data){
@@ -150,15 +150,35 @@ function showLignesFraisUser(json_url){
             $('#response').html("<div class='alert alert-danger'>Vous n'avez aucune ligne frais.</div>");
             addLigneFraisButtonUser();
         }else{
-            clearResponse();
             // html for listing lignes_frais
             showLignesFraisTemplateUser(data, "");
+            addBordereauControlButton(id_user);
             changePageTitle('Vos lignes frais');
         }
     }); 
     
 }
-
+function addBordereauControlButton(adherent_id){
+    $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(dat){
+        if(!dat.src_bordereau){
+            $('#create-bordereau-user1').show();
+            $('#create-ligne-frais-user').show();
+            
+        }else{
+           
+            if(dat.etre_valide == null || dat.etre_valide == '0'){
+                $('#create-bordereau-user2').show();
+                $('#create-ligne-frais-user').show();
+            }else{
+                $('#show-bordereau-user').show();
+            }
+        }
+        if(dat.cerfa){
+            $('#show-cerfa-user').show();
+        }
+            
+    });
+}
 function createLigneFraisFormUser(adherent_id){
     
     var html = `
@@ -651,48 +671,7 @@ function addLigneFraisButtonUser(){
                             <span><i class="bi bi-plus-lg"></i></span> Créer Ligne Frais
                         </div>`);
 }
-function addBordereauControlButton(adherent_id){
-    $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(dat){
-        if(!dat.src_bordereau){
-           $('#create-bordereau-user1').show();
-           //$("#create-bordereau-user1").attr('style', 'display:block');
-            $('#create-ligne-frais-user').show();
-            //$("#create-ligne-frais-user").attr('style', 'display:block');
-        /*$('#bordereauButton').html(`<!-- when clicked, it will load bordereau form -->
-                            <div id='create-bordereau-user' class='btn btn-primary create-bordereau-button-user'>
-                                <span><i class="bi bi-box-arrow-in-up-right"></i></span> Créer Bordereau
-                            </div>`);*/
-        }else{
-           
-            if(dat.etre_valide == null || dat.etre_valide == '0'){
-               $('#create-bordereau-user2').show();
-               //$("#create-bordereau-user2").attr('style', 'display:block');
-                $('#create-ligne-frais-user').show();
-                //$("#create-ligne-frais-user").attr('style', 'display:block');
-                /*$('#bordereauButton').html(`<!-- when clicked, it will load bordereau form -->
-                        <div id='create-bordereau-user' class='btn btn-primary create-bordereau-button-user'>
-                            <span><i class="bi bi-box-arrow-in-up-right"></i></span> Update Bordereau
-                        </div>`);*/
-            }else{
-                $('#show-bordereau-user').show();
-                //$("#show-bordereau-user").attr('style', 'display:block');
-                /*$('#bordereauButton').html(`<!-- when clicked, it will load bordereau form -->
-                        <div id='show-bordereau-user' class='btn btn-primary show-bordereau-button-user'>
-                            <span><i class="bi bi-box-arrow-in-up-right"></i></span> Voir Bordereau Validé
-                        </div>`);*/
-            }
-        }
-        if(dat.cerfa){
-            $('#show-cerfa-user').show();
-            //$("#show-cerfa-user").attr('style', 'display:block');
-            /*$('#cerfaButton').html(`<!-- when clicked, it will load cerfa fichier -->
-                            <div id='show-cerfa-user' class='btn btn-primary show-cerfa-button-user'>
-                                <span><i class="bi bi-file-check"></i></span> Voir CERFA
-                            </div>`);*/
-        }
-            
-    });
-}
+
 
 
 

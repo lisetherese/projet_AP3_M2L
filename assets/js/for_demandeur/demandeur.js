@@ -86,7 +86,7 @@ function showDemandeursTemplate(data, keywords){
         read_Demandeurs_html+=`</td></tr></table>`;
         // pagination
         if(data.paging){
-            read_Demandeurs_html+="<nav aria-label='search demandeurs pages'><ul class='pagination float-left margin-zero padding-bottom-2em'>";
+            read_Demandeurs_html+="<nav aria-label='search demandeurs pages'><ul class='pagination demandeurs float-left margin-zero padding-bottom-2em'>";
         
                 // first page
                 if(data.paging.first!=""){
@@ -339,22 +339,23 @@ function showOneDemandeurTemplate(data){
                                         <td>` + resultat.president + `</td>
                                     </tr>
                                     <tr>
+                                        <td><div class='btn btn-info all-demandeurs-button'><span><i class="bi bi-arrow-left-short"></i></span> Retourner</div></td>
                                         <td><div>
                                             <button class='btn btn-info m-r-10px update-demandeur-button' data-id='` + data.id + `'>
                                                 <span><i class="bi bi-pencil-square"></i></span> Modifier
-                                            </button></div>
-                                        </td>`;
+                                            </button>
+                                        `;
                                     
             if(adherent == "Non"){
                 read_one_demandeur_html+=`
-                                        <td><div><button class='btn btn-dark valider-demandeur-button' data-id='` + data.id + `'>
+                                        <button class='btn btn-dark valider-demandeur-button' data-id='` + data.id + `'>
                                                     <span><i class="bi bi-check"></i></span> Valider Adhésion</button></div>
                                         </td>
                                     </tr>
                                 </table>
                                 </div>`;
             }else{
-                read_one_demandeur_html+=`<td></td>
+                read_one_demandeur_html+=`</td>
                                     </tr>
                                 </table>
                                 </div>
@@ -385,22 +386,23 @@ function addDemandeurButton(){
                         </div>`);
 }
 function addAdhesion(demandeur_id, user_id){
+    // first: change status of demandeur in table 'demandeur' in DB: etre_adherent = 1 
     $.post("api/demandeur/change_status.php", JSON.stringify({ id:demandeur_id })).done(function(result) {
-
+        // then: change role in table utilisateur: from 'user' to 'adherent'
         $.post("http://localhost/M2L/api/user/change_role.php", JSON.stringify({ id:user_id })).done(function(resultat) {
 
-            // re-load list of demandeurs
+            // if succeed, re-load list of demandeurs
             showDemandeursFirstPage();
 
             $('#response').html("<div class='alert alert-success'>" + resultat.message + "</div>"); 
                         
         })
         .fail(function(resultat){
-            $('#response').append("<div class='alert alert-danger'>" + resultat.message + "</div>");
+            $('#response').html("<div class='alert alert-danger'>" + resultat.message + "</div>");
         });
 
     })
-    // show login page on error
+    // show login page on error system
     .fail(function(result){
         showLoginPage();
         $('#response').html("<div class='alert alert-danger'>" + result.message + "</div>");

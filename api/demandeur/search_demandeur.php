@@ -46,6 +46,7 @@ if($num>0){
             "cp" => $cp,
             "num_licence" => $num_licence,
             "date_naissance" => $date_naissance,
+            "etre_adherent" => $etre_adherent,
             "id_user" => $id_utilisateur,
             "id_ligue" => $id_ligue
         );

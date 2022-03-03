@@ -91,7 +91,20 @@ function readByIdUser($from_record_num, $records_per_page){
    // return values from database
    return $stmt;
    
-}   
+}  
+
+ // used for paging view of user
+ public function countUser(){
+    $query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name . " WHERE id_utilisateur = :id_user";
+
+    $stmt = $this->conn->prepare( $query );
+    // bind variable values
+    $stmt->bindParam(':id_user', $this->id_user);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return $row['total_rows'];
+} 
 // create new user record
 function create(){
     // if some elements need to be set:
@@ -333,7 +346,7 @@ function searchByUser($keywords,$user_id){
             WHERE
                 id_utilisateur = ? 
             AND
-                date_ligne_frais LIKE ? OR trajet LIKE ? 
+                (date_ligne_frais LIKE ? OR trajet LIKE ?) 
             ORDER BY
                 date_ligne_frais ASC";
 
@@ -356,7 +369,7 @@ function searchByUser($keywords,$user_id){
     return  $stmt;
 }
 
-// read resultat with pagination
+// read resultat with pagination for admin or tresorier
 public function readPaging($from_record_num, $records_per_page){
     
     // select query
@@ -375,7 +388,7 @@ public function readPaging($from_record_num, $records_per_page){
     return $stmt;
 }
 
- // used for paging
+ // used for paging all lignes frais
  public function count(){
     $query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name . "";
 
@@ -385,6 +398,6 @@ public function readPaging($from_record_num, $records_per_page){
 
     return $row['total_rows'];
 }
-    
+
 }
 ?>

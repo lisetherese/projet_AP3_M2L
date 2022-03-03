@@ -185,16 +185,15 @@
                                                 </form>
                                                 
                                                 <!-- Zone du mot de passe oublié -->
-                                                <form id='mdp_oublie_form' action='forms/contact_user.php' method='post' class="php-email-form">
-                                                    
+                                                <form id='mdp_oublie_form'>
                                                     
                                                      <!--Zone de verifier si le message a été bien envoyé-->
-                                                     <div class="my-3">
+                                                     <!--<div class="my-3">
                                                         <div class="loading">En cours...</div>
                                                         <div class="error-message"></div>
                                                         <div class="sent-message">Le lien à changer votre mot de passe a été envoyé. Veuillez vérifier votre boite mail!</div>
-                                                    </div>
-                                                    <div class="form-group">
+                                                    </div>-->
+                                                    <div class="form-group my-4">
                                                         <!--Input hidden until user click mdp oublié-->
                                                         <input type="email" id='email_of_user' name='email' class="form-control form-control-sm" placeholder="Email" hidden/>
                                                     </div>
@@ -306,7 +305,8 @@
 </main>
 <!-- /container -->
  
-<!-- jQuery & Bootstrap 4 JavaScript libraries -->
+<!-- jQuery & Bootstrap 4 JavaScript & axios libraries -->
+
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

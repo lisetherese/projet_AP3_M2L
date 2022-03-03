@@ -186,7 +186,7 @@ function showBordereauxTemplateTresorier(data, keywords){
 
         <!-- when clicked, it will load all bordereaux list-->
         <div id='all-bordereaux-tresorier' class='btn btn-primary float-right m-b-15px all-bordereaux-button-tresorier'>
-            <span><i class="bi bi-card-list"></i></span> Toutes Bordereaux
+            <span><i class="bi bi-card-list"></i></span> Tous Bordereaux
         </div>
 
         <!-- start table display bordereaux-->
@@ -265,7 +265,7 @@ function showBordereauxTemplateTresorier(data, keywords){
         read_bordereaux_html+=`</td></tr></table>`;
         // pagination
         if(data.paging){
-            read_bordereaux_html+="<nav aria-label='search bordereaux pages'><ul class='pagination float-left margin-zero padding-bottom-2em'>";
+            read_bordereaux_html+="<nav aria-label='search bordereaux pages'><ul class='pagination bordereaux float-left margin-zero padding-bottom-2em'>";
         
                 // first page
                 if(data.paging.first!=""){

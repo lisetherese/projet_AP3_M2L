@@ -319,6 +319,38 @@ function search($keywords){
 
     return  $stmt;
 }
+// search user
+function search_email(){
+    
+    // select all query
+    $query = "SELECT * FROM
+                " . $this->table_name . " 
+            WHERE
+                email = ? 
+            ";
+
+    // prepare query statement
+    $stmt = $this->conn->prepare($query);
+
+    // sanitize
+    $email=htmlspecialchars(strip_tags($this->email));
+
+    // bind
+    $stmt->bindParam(1, $email);
+   
+    $stmt->execute();
+ 
+    // get number of rows
+    $num = $stmt->rowCount();
+ 
+    // if email exists, assign values to object properties for easy access and use for php sessions
+    if($num>0){
+        return true;
+    }
+ 
+    // return false if email does not exist in the database
+    return false;
+}
 
 // read users with pagination
 public function readPaging($from_record_num, $records_per_page){

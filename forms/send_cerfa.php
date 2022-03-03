@@ -25,10 +25,10 @@
   $contact->to = $receiving_email_address;
   $contact->from_name = "Maison des Ligues";
   $contact->from_email = 'maisonliguescontact@gmail.com';
-    //add subject of email
-    $contact->subject = "Votre CERFA est prêt";
-    // add content of email
-    $contact->add_message( 'Veuillez vous connecter à votre compte sur notre site pour consulter votre CERFA.', 'Important');
+  //add subject of email
+  $contact->subject = "Votre document CERFA est disponible en ligne";
+  // add content of email
+  $contact->add_message( 'Veuillez vous connecter à votre compte sur notre site pour consulter votre document CERFA.', 'Important');
 
   //common 'send' function!
   echo $contact->send();

@@ -67,7 +67,7 @@ function showMotifsTemplate(data, keywords){
         read_Motifs_html+=`</table>`;
         // pagination
         if(data.paging){
-            read_Motifs_html+="<nav aria-label='search motifs pages'><ul class='pagination float-left margin-zero padding-bottom-2em'>";
+            read_Motifs_html+="<nav aria-label='search motifs pages'><ul class='pagination motifs float-left margin-zero padding-bottom-2em'>";
         
                 // first page
                 if(data.paging.first!=""){
