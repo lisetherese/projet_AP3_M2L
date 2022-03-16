@@ -45,7 +45,7 @@ async function showLignesFraisTemplate(data, keywords){
             $.each(data.records, async function(key, val) {
                 
                 //change display variable
-                var valide = (val.etre_valide == '0' || val.etre_valide == null) ? "Non" : "Oui" ;
+                var valide = (val.etre_valide == 0 || val.etre_valide == null) ? "Non" : "Oui" ;
                 // creating new table row per record
                 read_html+= `
                     <tr>

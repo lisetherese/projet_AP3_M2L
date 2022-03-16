@@ -36,7 +36,7 @@ if($user->updateRoleAdherent()){
     http_response_code(200);
             
     // response in json format
-    echo json_encode(array("message" => "L'utilisateur a été mis à jour comme adherent."));
+    echo json_encode(array("message" => "L'utilisateur a été mis à jour comme l'adhérent."));
 }
 // message if unable to update user
 else{

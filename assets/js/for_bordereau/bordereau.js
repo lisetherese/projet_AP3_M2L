@@ -370,8 +370,8 @@ function showBordereauxTemplate(data, keywords){
             // loop through returned list of data
             $.each(data.records, function(key, val) {
                 //change display variable
-                var valide = (val.etre_valide == '0' || val.etre_valide == null) ? "Non" : "Oui" 
-                var cerfa = (val.cerfa == '0' || val.cerfa == null) ? "Pas encore créé" : val.cerfa 
+                var valide = (val.etre_valide == 0 || val.etre_valide == null) ? "Non" : "Oui" 
+                var cerfa = (val.cerfa == '' || val.cerfa == null) ? "Pas encore créé" : val.cerfa 
                 // creating new table row per record
                 read_bordereaux_html+=`
                     <tr>
@@ -390,7 +390,7 @@ function showBordereauxTemplate(data, keywords){
                             </button>
                             
                            `;
-                if(val.etre_valide == null || val.etre_valide == "0" ){
+                if(val.etre_valide == null || val.etre_valide == 0 ){
                      read_bordereaux_html+=`
                         <!-- edit button -->
                         <button class='btn btn-info m-r-10px update-bordereau-button' data-id='` + val.id + `'>

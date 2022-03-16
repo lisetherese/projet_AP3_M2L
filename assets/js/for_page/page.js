@@ -450,7 +450,7 @@ function sendAndGetPDF(adherent_id) {
                data: imgData, idUser: adherent_id
             }
           }).done(function(o) {
-            $('#response').html(`<div class='alert alert-success'>${o}</div>`);
+            $('#response').append(`<div class='alert alert-success'>${o}</div>`);
           });
         //save as pdf file on user computer
         var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);

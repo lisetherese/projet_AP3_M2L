@@ -64,7 +64,7 @@ function showLignesFraisTemplateUser(data, keywords){
             // loop through returned list of data
             $.each(data.records, function(key, val) {
                 //change display variable
-                var valide = (val.etre_valide == '0' || val.etre_valide == null) ? "Non" : "Oui" 
+                var valide = (val.etre_valide == 0 || val.etre_valide == null) ? "Non" : "Oui" 
                 // creating new table row per record
                 read_lignes_frais_html+=`
                     <tr>
@@ -82,7 +82,7 @@ function showLignesFraisTemplateUser(data, keywords){
                             <button class='btn btn-primary m-r-10px read-one-ligne-frais-button-user' data-id='` + val.id + `'>
                                 <span><i class="bi bi-eye"></i></span> Lire
                             </button>`;
-                if(val.etre_valide == null || val.etre_valide == "0" ){
+                if(val.etre_valide == null || val.etre_valide == 0 ){
                      read_lignes_frais_html+=`
                             <!-- edit button -->
                             <button class='btn btn-info m-r-10px update-ligne-frais-button-user' data-id='` + val.id + `'>

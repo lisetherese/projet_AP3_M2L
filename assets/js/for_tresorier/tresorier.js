@@ -7,6 +7,7 @@ function showBordereauTresorier(adherent_id){
     var this_year = today.getFullYear();
     today = dd + '/' + mm + '/' + this_year;
     
+    
     $.getJSON("http://localhost/M2L/api/demandeur/read_by_id.php?id=" + adherent_id, function(data){
         
         var html = `
@@ -95,6 +96,7 @@ function showBordereauTresorier(adherent_id){
                 //add libelle of motif to 'td' tag above using function defined below to retrieve data by getJSON
                 getLibelle(val.id_motif, function(lib){$('#libelle'+ val.id).html(lib);});
                 
+                
             });
 
             html+=
@@ -125,35 +127,33 @@ function showBordereauTresorier(adherent_id){
                     <p>Signature du bénévole<span style="background-color:#CCFFCC;margin:0px 30px;padding:30px 150px">[signé]</p>
                 </div>
                 <div style="border: 1px solid black;background-color:#FF8BD8;width: 55%;margin-bottom: 50px;">
-                    <p style="text-align: center;font-weight: bold;">Partie réservée à l'association</p>`;
+                    <p style="text-align: center;font-weight: bold;">Partie réservée à l'association</p>
+                <p style="margin:15px 0px;">N° d'ordre du Reçu :<span id="num_ordre" style="margin-left: 170px;"></span></p>
+                <p style="margin:15px 0px;">Remis le :<input style="width:200px;text-align: center;border: none; border-bottom: dotted black 1px;margin-left: 150px;background-color:#FF8BD8;" type="text" value="${today}"/></p>
+                <p style="margin-top:15px;margin-bottom: 35px;">Signature du Trésorier : <input style="width:300px;text-align: center;border: none; border-bottom: dotted black 1px;margin-left: 50px;background-color:#FF8BD8;" type="text" value="[Saisir votre nom complet ici]"/></p>
+                    
+                </div>
+            </div>
 
+            <!--button to save file bordereau validé in serveur and download to tresorier computer-->
+            <div class="d-flex justify-content-center controls" style="margin-top: 10px;margin-bottom: 10px;">
+                <button type="submit" id="send_getPDF_tresorier" class="btn btn-primary">Valider et Télécharger en PDF</button>
+            </div>
+
+            <!--return to list of all bordereaux-->
+            <div class="d-flex justify-content-center controls" style="margin-bottom: 50px;">
+                <div class='btn btn-info all-bordereaux-button-tresorier'><span><i class="bi bi-arrow-left-short"></i></span> Retourner</div>
+            </div>`;
+
+            $('#content').html(html);
             //retrieve id of bordereau to input in No d'ordre du reçu
             $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(resu){
-                html +=
-                        `
-                        <p style="margin:15px 0px;">N° d'ordre du Reçu :<span id="num_ordre" style="margin-left: 170px;">${resu.id}</span></p>
-                        <p style="margin:15px 0px;">Remis le :<input style="width:200px;text-align: center;border: none; border-bottom: dotted black 1px;margin-left: 150px;background-color:#FF8BD8;" type="text" value="${today}"/></p>
-                        <p style="margin-top:15px;margin-bottom: 35px;">Signature du Trésorier : <input style="width:300px;text-align: center;border: none; border-bottom: dotted black 1px;margin-left: 50px;background-color:#FF8BD8;" type="text" value="[Saisir votre nom complet ici]"/></p>
-                        
-                    </div>
-                </div>
-
-                <!--button to save file bordereau validé in serveur and download to tresorier computer-->
-                <div class="d-flex justify-content-center controls" style="margin-top: 10px;margin-bottom: 10px;">
-                    <button type="submit" id="send_getPDF_tresorier" class="btn btn-primary">Valider et Télécharger en PDF</button>
-                </div>
-
-                <!--return to list of all bordereaux-->
-                <div class="d-flex justify-content-center controls" style="margin-bottom: 50px;">
-                    <div class='btn btn-info all-bordereaux-button-tresorier'><span><i class="bi bi-arrow-left-short"></i></span> Retourner</div>
-                </div>`;
-                    
-            
-                
-                $('#content').html(html);
+                $('#num_ordre').html(`${resu.id}`);
             });
         });          
     });
+    
+
 }
 
 //function to retrieve value from getJSON() using callback
@@ -205,8 +205,8 @@ function showBordereauxTemplateTresorier(data, keywords){
             // loop through returned list of data
             $.each(data.records, function(key, val) {
                 //change display variable
-                var valide = (val.etre_valide == '0' || val.etre_valide == null) ? "Non" : "Oui" 
-                var cerfa = (val.cerfa == '0' || val.cerfa == null) ? "Pas encore créé" : val.cerfa 
+                var valide = (val.etre_valide == 0 || val.etre_valide == null) ? "Non" : "Oui" 
+                var cerfa = (val.cerfa == '' || val.cerfa == null) ? "Pas encore créé" : val.cerfa 
                 // creating new table row per record
                 read_bordereaux_html+=`
                     <tr>
@@ -225,7 +225,7 @@ function showBordereauxTemplateTresorier(data, keywords){
                             </button>
                             
                            `;
-                if(val.etre_valide == null || val.etre_valide == "0" ){
+                if(val.etre_valide == null || val.etre_valide == 0 ){
                      read_bordereaux_html+=`
                         <!-- valider bordereau button -->
                         <button class='btn btn-dark valider-bordereau-button-tresorier' data-id='` + val.id_user + `'>
@@ -234,7 +234,7 @@ function showBordereauxTemplateTresorier(data, keywords){
                         `;
                 }else{
 
-                    if(val.cerfa == null || val.cerfa == '0'){
+                    if(val.cerfa == null || val.cerfa == ''){
                         read_bordereaux_html+=
                             `
                             <!-- invalider bordereau button -->
@@ -318,7 +318,7 @@ function showBordereauxTresorier(json_url){
 
 // display info of bordereau sous forme de tableau
 function showOneBordereauTemplateTresorier(data){
-    var valide = (data.etre_valide == '0' || data.etre_valide == null) ? "Non" : "Oui";
+    var valide = (data.etre_valide == 0 || data.etre_valide == null) ? "Non" : "Oui";
     var cerfa = (!data.cerfa) ? "Pas encore créé" : data.cerfa;
     var read_one_bordereau_html=`
                     <!-- when clicked, it will show the bordereau list -->
@@ -353,7 +353,7 @@ function showOneBordereauTemplateTresorier(data){
                                 </td>
                             `;
  
-        if(data.etre_valide == null || data.etre_valide == "0"){
+        if(data.etre_valide == null || data.etre_valide == 0){
             read_one_bordereau_html+=`
                                 <td>
                                     <div><button class='btn btn-dark valider-bordereau-button-tresorier' data-id='` + data.id_user + `'>

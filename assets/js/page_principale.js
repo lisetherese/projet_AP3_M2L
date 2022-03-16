@@ -679,10 +679,8 @@
                 callback: function (result) {
                     // request succeeded!
                     if(result==true){
-                        // change status "etre_adherent" of demandeur and change role 'adherent' in table utilisateur
+                        // change status "etre_adherent" of demandeur and change role 'adherent' in table utilisateur and show message 
                         addAdhesion(demandeur_id, user_id);
-                         // tell it was updated
-                        $('#response').html("<div class='alert alert-success'>Le demandeur a été mis à jour.</div>");
     
                     }
                 }
@@ -1575,7 +1573,7 @@
         // bootbox for good looking 'confirm pop up'
         bootbox.confirm({
         
-            message: "<h4>Vous êtes sur de valider la ligne frais ?</h4>",
+            message: "<h4>Vous êtes sûr de valider la ligne frais ?</h4>",
             buttons: {
                 confirm: {
                     label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -1617,7 +1615,7 @@
         // bootbox for good looking 'confirm pop up'
         bootbox.confirm({
         
-            message: "<h4>Vous êtes sur d'invalider cette ligne frais ?</h4>",
+            message: "<h4>Vous êtes sûr d'invalider cette ligne frais ?</h4>",
             buttons: {
                 confirm: {
                     label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -1953,7 +1951,7 @@
         // bootbox for good looking 'confirm pop up'
         bootbox.confirm({
         
-            message: "<h4>Vous êtes sur de supprimer cette ligne frais ?</h4>",
+            message: "<h4>Vous êtes sûr de supprimer cette ligne frais ?</h4>",
             buttons: {
                 confirm: {
                     label: '<span><i class="bi bi-check-lg"></i></span> Oui',
@@ -2016,8 +2014,8 @@
             callback: function (result) {
                 //if choice = yes
                 if(result==true){
-                    // save bordereau on server in folder files/bordereaux and download bordereau on user's end
-                    sendAndGetPDF(adherent_id);
+                   // save bordereau on server in folder files/bordereaux, download bordereau on user's end and display message of result
+                   sendAndGetPDF(adherent_id);
                     // check if bordereau already exists in DB by using 'read one record based on given id'
                     $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(data){
                         //if not yet created in DB then create:
@@ -2035,19 +2033,20 @@
                                 success : function(result) {
                                     // re-load list
                                     showLignesFraisFirstPageUser(adherent_id);
-                                    $('#response').html("<div class='alert alert-danger'>Action réussie. Vous pouvez modifier et renvoyer votre bordereau jusqu'à la validation du bordereau. </div>");
+                                    $('#response').append("<div class='alert alert-success'>Action réussie. Vous pouvez modifier et renvoyer votre bordereau jusqu'à la validation du bordereau. </div>");
                                 },
                                 error: function(xhr, resp, text) {
-                                    $('#response').html("<div class='alert alert-danger'>Impossible de sauvegarder votre bordereau dans la base de données. Veuillez contacter l'administrateur.</div>");
+                                    $('#response').append("<div class='alert alert-danger'>Impossible de sauvegarder votre bordereau dans la base de données. Veuillez contacter l'administrateur.</div>");
                                 }
                             });
 
                         }else{
                             // re-load list
                             showLignesFraisFirstPageUser(adherent_id);
-                            $('#response').html("<div class='alert alert-danger'>Action réussie. Vous pouvez modifier et renvoyer votre bordereau jusqu'à la validation du bordereau. </div>");
+                            $('#response').append("<div class='alert alert-success'>Action réussie. Vous pouvez modifier et renvoyer votre bordereau jusqu'à la validation du bordereau. </div>");
                         }
                     });  
+                     
                     
                 }
             }
@@ -2839,7 +2838,7 @@
                         var counter = 0;
                         // loop through returned list of data
                         $.each(da.records, function(key, val) {
-                            if(val.etre_valide !== '1'){
+                            if(val.etre_valide != 1){
                                 $.ajax({
                                     type: 'POST',
                                     url: 'http://localhost/M2L/api/ligne_frais/change_status.php',
@@ -2885,7 +2884,7 @@
         $.post("http://localhost/M2L/api/user/search_email_user.php", JSON.stringify({ email: email })).done(function(result) {
             $('.alert').remove();
             php_email_form_submit(thisForm, action, formData);  
-            //to avoid the authentification of email input of PHPEmail funciton, we dont 'catch error' in this email-sending-form, we suppose that if email exists in DB -> its real!
+            //to avoid the authentification of email input of PHPEmail function, we dont 'catch error' in this email-sending-form, we suppose as if email exists in DB -> as if its real!
             $('#mdp_oublie_form').append(`<div class='alert alert-success my-3'>Le lien à changer votre mot de passe a été envoyé. Veuillez vérifier votre boite mail!</div>`);
         })
         // on error/fail, tell the user
