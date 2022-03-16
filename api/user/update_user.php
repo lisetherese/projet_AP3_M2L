@@ -84,7 +84,7 @@ if($jwt){
         
         // message if unable to update user
         else{
-            // set response code
+            // set response code unauthorized
             http_response_code(401);
         
             // show error message
@@ -95,7 +95,7 @@ if($jwt){
     // if decode fails, it means jwt is invalid
     catch (Exception $e){
     
-        // set response code
+        // set response code unauthorized
         http_response_code(401);
     
         // show error message
@@ -109,7 +109,7 @@ if($jwt){
 // show error message if jwt is empty
 else{
  
-    // set response code
+    // set response code unauthorized
     http_response_code(401);
  
     // tell the user access denied

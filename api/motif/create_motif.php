@@ -21,7 +21,7 @@ $motif = new Motif($db);
 //file_get_contents() to read the contents of a file into a string and json_decode() to turn it into object json
 $data = json_decode(file_get_contents("php://input"));
  
-// set product property values
+// set motif property values
 $motif->libelle = $data->libelle;
 
 // create the motif

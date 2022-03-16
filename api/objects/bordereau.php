@@ -146,11 +146,12 @@ public function update(){
     $this->id=htmlspecialchars(strip_tags($this->id));
     // bind the values
     $stmt->bindParam(':id', $this->id);
+    $stmt->bindParam(':id_user', $this->id_user);
     if($this->src_bordereau !== 'no_modif'){
         $stmt->bindParam(':src_bordereau', $this->src_bordereau);
     }
     if($this->cerfa !== 'no_modif'){
-        $stmt->bindParam(':id_user', $this->id_user);
+        $stmt->bindParam(':cerfa', $this->cerfa);
     }
     
     // execute the query, also check if query was successful

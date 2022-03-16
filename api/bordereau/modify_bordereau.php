@@ -25,14 +25,14 @@ $this_year = date("Y");
 $bordereau->id = $data->id;
 $bordereau->id_user = $data->id_user;
 if($data->src_bordereau === null || $data->src_bordereau === ''){
-    $bordereau->src_bordereau = 'no_modif';
+    $bordereau->src_bordereau = "no_modif";
 }else{
     $pathinfo = pathinfo($data->src_bordereau);
     $extension_bor = $pathinfo['extension'];
     $bordereau->src_bordereau = "user_id_{$data->id_user}_{$this_year}.{$extension_bor}";
 }
 if($data->cerfa === null || $data->cerfa === ''){
-    $bordereau->cerfa = 'no_modif';
+    $bordereau->cerfa = "no_modif";
 }else{
     $pathinfo_cer = pathinfo($data->cerfa);
     $extension_cer = $pathinfo_cer['extension'];
@@ -55,5 +55,6 @@ else{
     // show error message
     echo json_encode(array("message" => "Impossible de mettre à jour le bordereau."));
     }
+   // echo json_encode(array("src_bor"=>$bordereau->src_bordereau, "cerfa"=>$bordereau->cerfa, "id"=>$bordereau->id, "id_user"=>$bordereau->id_user));
 
 ?>

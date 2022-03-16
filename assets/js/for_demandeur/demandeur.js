@@ -129,7 +129,7 @@ function showDemandeurs(json_url){
             $('#response').html("<div class='alert alert-danger'>Aucun demandeur trouvé.</div>");
             addDemandeurButton();
         }else{
-            clearResponse();
+            
             // html for listing Demandeurs
             showDemandeursTemplate(data, "");
         }

@@ -41,7 +41,7 @@ if($result){
   
 else{
     // set response code - 404 Not found
-    http_response_code(404);
+    //http_response_code(404);
   
     // tell client that the user does not exist
     echo json_encode(array("message" => "L'utilisateur n'existe pas."));

@@ -49,7 +49,7 @@ if( !$email_exists &&
 // message if unable to create user
 else{
  
-    // set response code
+    // set response code - client error (invalid request)
     http_response_code(400);
  
     // display message: unable to create user

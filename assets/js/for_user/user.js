@@ -384,7 +384,7 @@ function showUpdateAccountHTML(result){
 
         
         var button = `  <button type='submit' class='btn btn-primary'>
-                            <span><i class="bi bi-save"></i></span>Sauvegarder
+                            <span><i class="bi bi-save"></i></span> Sauvegarder
                         </button>
                     </form>`;
 
@@ -483,7 +483,7 @@ function demanderAdhesionFormulaire(result){
                 html+=`</select>
                         </div>
                         <div class="form-group">
-                            <label for="justificatif">Justificatif</label>
+                            <label for="justificatif">Justificatif en pdf ou image</label>
                             <input type="hidden" name="MAX_FILE_SIZE" value="2400000" />
                             <input type="file" name="justificatif" class="form-control" accept="image/*,application/pdf" id="justificatif" required />
                         </div>
@@ -570,7 +570,7 @@ function displayAdhesionFormulaire(result){
                 html+=`</select>
                         </div>
                         <div class="form-group">
-                            <label for="justificatif">Justificatif</label>
+                            <label for="justificatif">Justificatif en pdf ou image</label>
                             <input type="hidden" name="MAX_FILE_SIZE" value="2400000" />
                             <input type="file" name="justificatif" class="form-control" accept="image/*,application/pdf" id="justificatif" required />
                         </div>

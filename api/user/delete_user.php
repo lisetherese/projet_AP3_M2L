@@ -36,7 +36,7 @@ if($user->delete()){
 // if unable to delete the user
 else{
   
-    // set response code - 503 service unavailable
+    // set response code - 503 service unavailable , the server is temporarily unable to handle the request but is otherwise functioning as normal
     http_response_code(503);
   
     // tell the user

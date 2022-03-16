@@ -64,13 +64,13 @@ function showBordereauTresorier(adherent_id){
                 val.repas_valide = (val.repas_valide == '0' || val.repas_valide == null) ? 0 : val.repas_valide;
                 val.hebergement_valide = (val.hebergement_valide == '0' || val.hebergement_valide == null) ? 0 : val.hebergement_valide;
                 //calcul montant total par ligne
-                total_par_ligne = cout_trajet + val.peage_valide + val.repas_valide + val.hebergement_valide;
+                total_par_ligne = Math.round((cout_trajet + val.peage_valide + val.repas_valide + val.hebergement_valide)*100)/100;
                 //turn values into strings to display on screen, avoid 'null' values
                 peage_valide = (val.peage_valide == '0' || val.peage_valide == null) ? "-" : (val.peage_valide + '&euro;');
                 repas_valide = (val.repas_valide == '0' || val.repas_valide == null) ? "-" : (val.repas_valide + '&euro;');
                 hebergement_valide = (val.hebergement_valide == '0' || val.hebergement_valide == null) ? "-" : (val.hebergement_valide + '&euro;');
                 //calul montant total all lignes
-                montant = montant+total_par_ligne;
+                montant = Math.round((montant+total_par_ligne)*100)/100;
                 //convert date format in SQL into format required jj/mm/aaaa in JS
                 var d = new Date(val.date_ligne_frais);
                 var day = String(d.getDate()).padStart(2, '0');
@@ -319,7 +319,7 @@ function showBordereauxTresorier(json_url){
 // display info of bordereau sous forme de tableau
 function showOneBordereauTemplateTresorier(data){
     var valide = (data.etre_valide == '0' || data.etre_valide == null) ? "Non" : "Oui";
-    var cerfa = (data.cerfa == '' || data.etre_valide == null) ? "Pas encore créé" : data.cerfa;
+    var cerfa = (!data.cerfa) ? "Pas encore créé" : data.cerfa;
     var read_one_bordereau_html=`
                     <!-- when clicked, it will show the bordereau list -->
                     <div id='all-bordereaux' class='btn btn-primary float-right m-b-15px all-bordereaux-button-tresorier'>
@@ -471,9 +471,9 @@ function showCERFAFormTresorier(adherent_id){
                     val.repas_valide = (val.repas_valide == '0' || val.repas_valide == null) ? 0 : val.repas_valide;
                     val.hebergement_valide = (val.hebergement_valide == '0' || val.hebergement_valide == null) ? 0 : val.hebergement_valide;
                     //calcul montant total par ligne
-                    total_par_ligne = cout_trajet + val.peage_valide + val.repas_valide + val.hebergement_valide;
+                    total_par_ligne = Math.round((cout_trajet + val.peage_valide + val.repas_valide + val.hebergement_valide)*100)/100;
                     //calul montant total all lignes
-                    montant = montant+total_par_ligne;
+                    montant = Math.round((montant+total_par_ligne)*100)/100;
                 });
                 //add to html
                 html+=

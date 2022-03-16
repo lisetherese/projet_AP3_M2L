@@ -40,7 +40,7 @@ if($email_exists && $pw_updated){ //built-in function password_verify — Verifi
 // update pw failed
 else{
  
-    // set response code
+    // set response code unauthorized!
     http_response_code(401);
  
     // tell the user login failed

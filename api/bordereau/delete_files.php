@@ -7,11 +7,10 @@ if(isset($_POST)){
 
     $response = '';
     
-    //declare path of files
-    $file= $dir.$_POST['src_bordereau'];
-    $cerfa = $dir_cerfa.$_POST['cerfa'];
 
     if(isset($_POST['src_bordereau'])){
+        //declare path of files
+        $file= $dir.$_POST['src_bordereau'];
          //if delete bordereau file success
         if(unlink($file)){
             $response .='Bordereau suppression réussi. ';
@@ -19,6 +18,8 @@ if(isset($_POST)){
     }
     //if cerfa exists then delete cerfa
     if(isset($_POST['cerfa'])){
+        //declare path of files
+        $cerfa = $dir_cerfa.$_POST['cerfa'];
         if(unlink($cerfa)){
             $response .='CERFA suppression réussi. ';
         }

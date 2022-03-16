@@ -73,7 +73,7 @@ if($email_exists && password_verify($data->mdp, $user->mdp)){ //built-in functio
 // login failed
 else{
  
-    // set response code
+    // set response code - unauthorized
     http_response_code(401);
  
     // tell the user login failed
