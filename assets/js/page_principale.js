@@ -168,7 +168,7 @@
         //get ligue id from button with data-id='val.id' in form showLigues()
         var id = $(this).attr('data-id');
         // read one record based on given ligue id
-        $.getJSON("http://localhost/M2L/api/ligue/read_one_ligue.php?id=" + id, function(data){
+        $.getJSON("api/ligue/read_one_ligue.php?id=" + id, function(data){
             updateOneLigue(data);
         });
 
@@ -222,7 +222,7 @@
         // get ligue id
         var id = $(this).attr('data-id');
         // read ligue record based on given ID
-        $.getJSON("http://localhost/M2L/api/ligue/read_one_ligue.php?id=" + id, function(data){
+        $.getJSON("api/ligue/read_one_ligue.php?id=" + id, function(data){
             // show HTML template
             showOneLigueTemplate(data);
             // chage page title
@@ -252,7 +252,7 @@
         changePageTitle("Chercher ligues: " + keywords);
  
         // get data from the api based on search keywords
-        $.getJSON("http://localhost/M2L/api/ligue/search_ligue.php?s=" + keywords, function(data){
+        $.getJSON("api/ligue/search_ligue.php?s=" + keywords, function(data){
             if(data.message){$('#response').html(`<div class='alert alert-danger'>${data.message}.</div>`)}else{
             // template in ligues.js
             showLiguesTemplate(data, keywords);}
@@ -288,7 +288,7 @@
  
                     // send delete request to api / remote server
                     $.ajax({
-                        url: "http://localhost/M2L/api/ligue/delete_ligue.php",
+                        url: "api/ligue/delete_ligue.php",
                         type : "POST",
                         dataType : 'json',
                         data : JSON.stringify({ id: ligue_id }),
@@ -319,7 +319,7 @@
         var form_data=JSON.stringify($(this).serializeObject());
         // submit form data to api
         $.ajax({
-            url: "http://localhost/M2L/api/ligue/create_ligue.php",
+            url: "api/ligue/create_ligue.php",
             type : "POST",
             contentType : 'application/json',
             data : form_data,
@@ -362,7 +362,7 @@
         //get user id from button with data-id='val.id' in form showUsers()
         var id = $(this).attr('data-id');
         // read one record based on given user id
-        $.getJSON("http://localhost/M2L/api/user/read_one_user.php?id=" + id, function(data){
+        $.getJSON("api/user/read_one_user.php?id=" + id, function(data){
             updateOneUser(data);
         });
 
@@ -417,7 +417,7 @@
         // get user id
         var id = $(this).attr('data-id');
         // read user record based on given ID
-        $.getJSON("http://localhost/M2L/api/user/read_one_user.php?id=" + id, function(data){
+        $.getJSON("api/user/read_one_user.php?id=" + id, function(data){
             // show HTML template
             showOneUserTemplate(data);
             // chage page title
@@ -446,7 +446,7 @@
         changePageTitle("Chercher utilisateurs: " + keywords);
  
         // get data from the api based on search keywords
-        $.getJSON("http://localhost/M2L/api/user/search_user.php?s=" + keywords, function(data){
+        $.getJSON("api/user/search_user.php?s=" + keywords, function(data){
             if(data.message){$('#response').html(`<div class='alert alert-danger'>${data.message}.</div>`)}else{
             // template in users.js
             showUsersTemplate(data, keywords);}
@@ -482,7 +482,7 @@
  
                     // send delete request to api / remote server
                     $.ajax({
-                        url: "http://localhost/M2L/api/user/delete_user.php",
+                        url: "api/user/delete_user.php",
                         type : "POST",
                         dataType : 'json',
                         data : JSON.stringify({ id: user_id }),
@@ -515,7 +515,7 @@
         var form_data=JSON.stringify($(this).serializeObject());
         // submit form data to api
         $.ajax({
-            url: "http://localhost/M2L/api/user/create_user.php",
+            url: "api/user/create_user.php",
             type : "POST",
             contentType : 'application/json',
             data : form_data,
@@ -626,6 +626,7 @@
 
     //onlick button Demandeur
     $(document).on('click', '#gerer-demandeur', function(){
+        clearResponse();
         showDemandeursFirstPage();
         changePageTitle("Liste des demandeurs");
 
@@ -645,7 +646,7 @@
         //get demandeur id from button with data-id='val.id' in form showDemandeurs()
         var id = $(this).attr('data-id');
         // read one record based on given demandeur id
-        $.getJSON("http://localhost/M2L/api/demandeur/read_one_demandeur.php?id=" + id, function(data){
+        $.getJSON("api/demandeur/read_one_demandeur.php?id=" + id, function(data){
             clearResponse();
              //change title
             changePageTitle("Mettre à jour le demandeur");
@@ -660,7 +661,7 @@
     $(document).on('click', '.valider-demandeur-button', function(){
         var demandeur_id = $(this).attr('data-id');
         var user_id = 0;
-        $.getJSON("http://localhost/M2L/api/demandeur/read_one_demandeur.php?id=" + demandeur_id, function(resultat){
+        $.getJSON("api/demandeur/read_one_demandeur.php?id=" + demandeur_id, function(resultat){
             user_id = resultat.id_user;
             // bootbox for good looking 'confirm pop up'
             bootbox.confirm({
@@ -730,13 +731,11 @@
         // get demandeur id
         var id = $(this).attr('data-id');
         // read demandeur record based on given ID
-        $.getJSON("http://localhost/M2L/api/demandeur/read_one_demandeur.php?id=" + id, function(data){
+        $.getJSON("api/demandeur/read_one_demandeur.php?id=" + id, function(data){
             // show HTML template
             showOneDemandeurTemplate(data);
             // chage page title
             changePageTitle("Info du demandeur");
-            
-            
         });
         // prevent whole page reload
         return false;
@@ -760,7 +759,7 @@
         changePageTitle("Chercher demandeurs: " + keywords);
     
         // get data from the api based on search keywords
-        $.getJSON("http://localhost/M2L/api/demandeur/search_demandeur.php?s=" + keywords, function(data){
+        $.getJSON("api/demandeur/search_demandeur.php?s=" + keywords, function(data){
             // if can't be found -> display div alert-danger telling user of the result
             if(data.message){$('#response').html(`<div class='alert alert-danger'>${data.message}.</div>`)}else{
             // if succeeded, show template in demandeurs.js: show all demandeurs correspond to the search
@@ -797,7 +796,7 @@
     
                     // send delete request to api / remote server
                     $.ajax({
-                        url: "http://localhost/M2L/api/demandeur/delete_demandeur.php",
+                        url: "api/demandeur/delete_demandeur.php",
                         type : "POST",
                         dataType : 'json',
                         data : JSON.stringify({ id: demandeur_id }),
@@ -825,7 +824,7 @@
         //clear previous response
         clearResponse();
         var content = createDemandeurForm();
-        $.getJSON("http://localhost/M2L/api/ligue/read.php", function(data){
+        $.getJSON("api/ligue/read.php", function(data){
             // loop through returned list of data
             $.each(data.records, function(key, val){
                 // pre-select option is category id is the same
@@ -858,7 +857,7 @@
         var form_data=JSON.stringify($(this).serializeObject());
         // submit form data to api
         $.ajax({
-            url: "http://localhost/M2L/api/demandeur/create_demandeur.php",
+            url: "api/demandeur/create_demandeur.php",
             type : "POST",
             contentType : 'application/json',
             data : form_data,
@@ -920,7 +919,7 @@
         var update_form_data=JSON.stringify(form_data);
         // submit form data to api
         $.ajax({
-            url: "http://localhost/M2L/api/demandeur/create_demandeur.php",
+            url: "api/demandeur/create_demandeur.php",
             type : "POST",
             contentType : 'application/json',
             data : update_form_data,
@@ -992,7 +991,7 @@
         var update_form_data=JSON.stringify(form_data);
         // submit form data to api
         $.ajax({
-            url: "http://localhost/M2L/api/demandeur/modify_demandeur.php",
+            url: "api/demandeur/modify_demandeur.php",
             type : "POST",
             contentType : 'application/json',
             data : update_form_data,
@@ -1046,7 +1045,7 @@
         //get motif id from button with data-id='val.id' in form showMotifs()
         var id = $(this).attr('data-id');
         // read one record based on given motif id
-        $.getJSON("http://localhost/M2L/api/motif/read_one_motif.php?id=" + id, function(data){
+        $.getJSON("api/motif/read_one_motif.php?id=" + id, function(data){
             updateOneMotif(data);
         });
 
@@ -1114,7 +1113,7 @@
         changePageTitle("Chercher motifs: " + keywords);
 
         // get data from the api based on search keywords
-        $.getJSON("http://localhost/M2L/api/motif/search_motif.php?s=" + keywords, function(data){
+        $.getJSON("api/motif/search_motif.php?s=" + keywords, function(data){
             if(data.message){$('#response').html("<div class='alert alert-danger'>${data.message}.</div>")}else{
             // template in motifs.js
             showMotifsTemplate(data, keywords);}
@@ -1150,7 +1149,7 @@
 
                     // send delete request to api / remote server
                     $.ajax({
-                        url: "http://localhost/M2L/api/motif/delete_motif.php",
+                        url: "api/motif/delete_motif.php",
                         type : "POST",
                         dataType : 'json',
                         data : JSON.stringify({ id: motif_id }),
@@ -1181,7 +1180,7 @@
         var form_data=JSON.stringify($(this).serializeObject());
         // submit form data to api
         $.ajax({
-            url: "http://localhost/M2L/api/motif/create_motif.php",
+            url: "api/motif/create_motif.php",
             type : "POST",
             contentType : 'application/json',
             data : form_data,
@@ -1213,7 +1212,7 @@
         var id_user = $(this).attr('data-id');
         var valide = $(this).attr('data-valide');
         //request data from table bordereau according to id_user
-        $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + id_user, function(da){
+        $.getJSON("api/bordereau/read_by_id_user.php?id=" + id_user, function(da){
             //replace button 'Actions' by the other buttons 
             //if no bordereau found and the ligne frais is not yet validated
             // or if bordereau found and its not yet validated and the ligne frais itself is not validated too 
@@ -1249,7 +1248,7 @@
         clearResponse();
         var html = createLigneFraisForm();
         //get all motifs to put into 'select' of the form to create ligne frais
-        $.getJSON("http://localhost/M2L/api/motif/read.php", function(data){
+        $.getJSON("api/motif/read.php", function(data){
             
             $.each(data.records, function(key, val){
                 // pre-select option is category id is the same
@@ -1315,7 +1314,7 @@
         //using xhttp to upload attached files in formData to our folder: assets/files/ligne_frais
         var xhttp = new XMLHttpRequest();
          // Set POST method and ajax file path
-        xhttp.open("POST", "http://localhost/M2L/api/ligne_frais/upload_files.php", true);
+        xhttp.open("POST", "api/ligne_frais/upload_files.php", true);
         // call on request changes state
         xhttp.onreadystatechange = function() {
             // if uploading file succeeded
@@ -1330,7 +1329,7 @@
 
         // Then, submit form data to api to inject ligne frais into our DB
         $.ajax({
-            url: "http://localhost/M2L/api/ligne_frais/create_ligne_frais.php",
+            url: "api/ligne_frais/create_ligne_frais.php",
             type : "POST",
             contentType : 'application/json',
             data : form_data,
@@ -1375,7 +1374,7 @@
  
                     // then send delete request to api to delete the ligne frais in DB
                     $.ajax({
-                        url: "http://localhost/M2L/api/ligne_frais/delete_ligne_frais.php",
+                        url: "api/ligne_frais/delete_ligne_frais.php",
                         type : "POST",
                         dataType : 'json',
                         data : JSON.stringify({ id: ligne_id }),
@@ -1405,7 +1404,7 @@
         changePageTitle("Chercher lignes frais: " + keywords);
  
         // get data from the api based on search keywords
-        $.getJSON("http://localhost/M2L/api/ligne_frais/search_ligne_frais.php?s=" + keywords, function(data){
+        $.getJSON("api/ligne_frais/search_ligne_frais.php?s=" + keywords, function(data){
             if(data.message){$('#response').html("<div class='alert alert-danger'>Aucune ligne frais trouvée ou la recherche invalide.</div>");}
             else{
             // show template
@@ -1427,7 +1426,7 @@
         // get demandeur id
         var id = $(this).attr('data-id');
         // read record based on given ID
-        $.getJSON("http://localhost/M2L/api/ligne_frais/read_one_ligne_frais.php?id=" + id, function(data){
+        $.getJSON("api/ligne_frais/read_one_ligne_frais.php?id=" + id, function(data){
             // show HTML template
             showOneLigneFraisTemplate(data);
             //clear response
@@ -1444,7 +1443,7 @@
         //get id from button with data-id='val.id'
         var id = $(this).attr('data-id');
         // read one record based on given id
-        $.getJSON("http://localhost/M2L/api/ligne_frais/read_one_ligne_frais.php?id=" + id, function(data){
+        $.getJSON("api/ligne_frais/read_one_ligne_frais.php?id=" + id, function(data){
             
             updateOneLigneFrais(data);
         });
@@ -1489,7 +1488,7 @@
         }
         var xhttp1 = new XMLHttpRequest();
         // Set POST method and ajax file path
-        xhttp1.open("POST", "http://localhost/M2L/api/ligne_frais/delete_files.php", true);
+        xhttp1.open("POST", "api/ligne_frais/delete_files.php", true);
         // call on request changes state
         xhttp1.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -1522,7 +1521,7 @@
         }
         var xhttp = new XMLHttpRequest();
         // Set POST method and ajax file path
-        xhttp.open("POST", "http://localhost/M2L/api/ligne_frais/upload_files.php", true);
+        xhttp.open("POST", "api/ligne_frais/upload_files.php", true);
         // call on request changes state
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -1590,7 +1589,7 @@
  
                     // send request to api / remote server
                     $.ajax({
-                        url: "http://localhost/M2L/api/ligne_frais/change_status.php",
+                        url: "api/ligne_frais/change_status.php",
                         type : "POST",
                         dataType : 'json',
                         data : JSON.stringify({ id: ligne_id, valide: 1}),
@@ -1632,7 +1631,7 @@
  
                     // send request to api / remote server
                     $.ajax({
-                        url: "http://localhost/M2L/api/ligne_frais/change_status.php",
+                        url: "api/ligne_frais/change_status.php",
                         type : "POST",
                         dataType : 'json',
                         data : JSON.stringify({ id: ligne_id, valide: null}),
@@ -1698,7 +1697,7 @@
         changePageTitle("Chercher lignes frais: " + keywords);
  
         // get data from the api based on search keywords
-        $.getJSON("http://localhost/M2L/api/ligne_frais/search_ligne_frais_user.php?s=" + keywords + "&id=" + adherent_id, function(data){
+        $.getJSON("api/ligne_frais/search_ligne_frais_user.php?s=" + keywords + "&id=" + adherent_id, function(data){
             if(data.message){$('#response').html("<div class='alert alert-danger'>Aucune ligne frais trouvée ou la recherche invalide.</div>");}
             else{
                 // show template
@@ -1717,7 +1716,7 @@
         clearResponse();
         var html = createLigneFraisFormUser(adherent_id);
         //rettrieve all motifs to put in select motifs form
-        $.getJSON("http://localhost/M2L/api/motif/read.php", function(data){
+        $.getJSON("api/motif/read.php", function(data){
             
             $.each(data.records, function(key, val){
                 // pre-select option is category id is the same
@@ -1767,7 +1766,7 @@
         }
         var xhttp = new XMLHttpRequest();
          // Set POST method and ajax file path
-        xhttp.open("POST", "http://localhost/M2L/api/ligne_frais/upload_files.php", true);
+        xhttp.open("POST", "api/ligne_frais/upload_files.php", true);
         // call on request changes state
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -1781,7 +1780,7 @@
 
         // submit form data to api
         $.ajax({
-            url: "http://localhost/M2L/api/ligne_frais/create_ligne_frais.php",
+            url: "api/ligne_frais/create_ligne_frais.php",
             type : "POST",
             contentType : 'application/json',
             data : form_data,
@@ -1805,7 +1804,7 @@
         // get lign frais id attached to button 'Lire'
         var id = $(this).attr('data-id');
         // read record based on given ID
-        $.getJSON("http://localhost/M2L/api/ligne_frais/read_one_ligne_frais.php?id=" + id, function(data){
+        $.getJSON("api/ligne_frais/read_one_ligne_frais.php?id=" + id, function(data){
             clearResponse();
             // show HTML template
             showOneLigneFraisTemplateUser(data);
@@ -1822,7 +1821,7 @@
         //get id from button with data-id='val.id'
         var id = $(this).attr('data-id');
         // read one record based on given id
-        $.getJSON("http://localhost/M2L/api/ligne_frais/read_one_ligne_frais.php?id=" + id, function(data){
+        $.getJSON("api/ligne_frais/read_one_ligne_frais.php?id=" + id, function(data){
             
             //show form to input data to update la ligne frais
             updateOneLigneFraisUser(data);
@@ -1867,7 +1866,7 @@
         }
         var xhttp1 = new XMLHttpRequest();
         // Set POST method and ajax file path
-        xhttp1.open("POST", "http://localhost/M2L/api/ligne_frais/delete_files.php", true);
+        xhttp1.open("POST", "api/ligne_frais/delete_files.php", true);
         // call on request changes state
         xhttp1.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -1898,7 +1897,7 @@
         }
         var xhttp = new XMLHttpRequest();
         // Set POST method and ajax file path
-        xhttp.open("POST", "http://localhost/M2L/api/ligne_frais/upload_files.php", true);
+        xhttp.open("POST", "api/ligne_frais/upload_files.php", true);
         // call on request changes state
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -1970,7 +1969,7 @@
     
                     // send delete request to api / remote server to delete in DB
                     $.ajax({
-                        url: "http://localhost/M2L/api/ligne_frais/delete_ligne_frais.php",
+                        url: "api/ligne_frais/delete_ligne_frais.php",
                         type : "POST",
                         dataType : 'json',
                         data : JSON.stringify({ id: ligne_id }),
@@ -2017,7 +2016,7 @@
                    // save bordereau on server in folder files/bordereaux, download bordereau on user's end and display message of result
                    sendAndGetPDF(adherent_id);
                     // check if bordereau already exists in DB by using 'read one record based on given id'
-                    $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(data){
+                    $.getJSON("api/bordereau/read_by_id_user.php?id=" + adherent_id, function(data){
                         //if not yet created in DB then create:
                         if(!data.id){
                             //define name of bordereau to inject in database
@@ -2026,7 +2025,7 @@
                             var src = `user_id_${adherent_id}_${this_year}.jpg`;
                             // make change in table bordereau in database
                             $.ajax({
-                                url: "http://localhost/M2L/api/bordereau/create_bordereau.php",
+                                url: "api/bordereau/create_bordereau.php",
                                 type : "POST",
                                 dataType : 'json',
                                 data : JSON.stringify({ id_user: adherent_id, src_bordereau: src }),
@@ -2101,7 +2100,7 @@
         // get demandeur id
         var id = $(this).attr('data-id');
         // read record based on given ID
-        $.getJSON("http://localhost/M2L/api/bordereau/read_one_bordereau.php?id=" + id, function(data){
+        $.getJSON("api/bordereau/read_one_bordereau.php?id=" + id, function(data){
             // show HTML template
             showOneBordereauTemplate(data);
             // chage page title
@@ -2117,7 +2116,7 @@
         //get bordereau id from button with data-id='val.id' in form showBordereaux()
         var id = $(this).attr('data-id');
         // read one record based on given bordereau id
-        $.getJSON("http://localhost/M2L/api/bordereau/read_one_bordereau.php?id=" + id, function(data){
+        $.getJSON("api/bordereau/read_one_bordereau.php?id=" + id, function(data){
             updateOneBordereau(data);
         });
 
@@ -2159,7 +2158,7 @@
         }
         var xhttp1 = new XMLHttpRequest();
         // Set POST method and ajax file path
-        xhttp1.open("POST", "http://localhost/M2L/api/bordereau/delete_files.php", true);
+        xhttp1.open("POST", "api/bordereau/delete_files.php", true);
         // call on request changes state
         xhttp1.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -2190,7 +2189,7 @@
         }
         var xhttp = new XMLHttpRequest();
         // Set POST method and ajax file path
-        xhttp.open("POST", "http://localhost/M2L/api/bordereau/upload_files.php", true);
+        xhttp.open("POST", "api/bordereau/upload_files.php", true);
         // call on request changes state
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -2252,7 +2251,7 @@
         changePageTitle("Chercher bordereau: " + keywords);
 
         // get data from the api based on search keywords
-        $.getJSON("http://localhost/M2L/api/bordereau/search_bordereau.php?s=" + keywords, function(data){
+        $.getJSON("api/bordereau/search_bordereau.php?s=" + keywords, function(data){
             if(data.message){$('#response').html(`<div class='alert alert-danger'>${data.message}.</div>`)}else{
             // template in bordereaux.js
             showBordereauxTemplate(data, keywords);}
@@ -2290,7 +2289,7 @@
 
                     // send delete request to api / remote server to delete bordereau in DB
                     $.ajax({
-                        url: "http://localhost/M2L/api/bordereau/delete_bordereau.php",
+                        url: "api/bordereau/delete_bordereau.php",
                         type : "POST",
                         dataType : 'json',
                         data : JSON.stringify({ id: bordereau_id }),
@@ -2333,7 +2332,7 @@
                     
                     // send request to api to change status of bordereau: become etre_validé ou 'etre_valide = 1' in DB
                     $.ajax({
-                        url: "http://localhost/M2L/api/bordereau/change_status.php",
+                        url: "api/bordereau/change_status.php",
                         type : "POST",
                         dataType : 'json',
                         data : JSON.stringify({ id: bordereau_id, valide: 1}),
@@ -2347,16 +2346,16 @@
                         }
                     });
                     // read one record based on given bordereau id
-                    $.getJSON("http://localhost/M2L/api/bordereau/read_one_bordereau.php?id=" + bordereau_id, function(data){
+                    $.getJSON("api/bordereau/read_one_bordereau.php?id=" + bordereau_id, function(data){
                         //retrieve all lignes frais by id user
-                        $.getJSON("http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id=" + data.id_user, function(da){
+                        $.getJSON("api/ligne_frais/read_by_id_user.php?id=" + data.id_user, function(da){
                             var counter = 0;
                             // loop through returned list of data
                             $.each(da.records, function(key, val) {
                                 if(val.etre_valide != 1){
                                     $.ajax({
                                         type: 'POST',
-                                        url: 'http://localhost/M2L/api/ligne_frais/change_status.php',
+                                        url: 'api/ligne_frais/change_status.php',
                                         data: JSON.stringify({ id: val.id, valide: 1 }),
                                         async: false, //set to false to wait for the counter augmented.
                                         success: function() {
@@ -2400,7 +2399,7 @@
 
                     // send request to api / remote server to change etre_valide = null in DB
                     $.ajax({
-                        url: "http://localhost/M2L/api/bordereau/change_status.php",
+                        url: "api/bordereau/change_status.php",
                         type : "POST",
                         dataType : 'json',
                         data : JSON.stringify({ id: ligne_id, valide: null}),
@@ -2434,14 +2433,14 @@
         
         }else{
             //check if id_user input is valid or not
-            $.getJSON("http://localhost/M2L/api/user/read_one_user.php?id="+adherent_id, function(da){
+            $.getJSON("api/user/read_one_user.php?id="+adherent_id, function(da){
                 //if cant find that id_user or if found but role is different than 'adherent'
                 if(da.message || (da.id && da.role != 'adherent')){
                     //display response
                     $('#response').html(`<div class='alert alert-danger'>L'utilisateur ${adherent_id} n'est pas un adhérent!</div>`);
                 }else{
                     //check if this id_user has any lignes frais
-                    $.getJSON("http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id="+adherent_id, function(data){
+                    $.getJSON("api/ligne_frais/read_by_id_user.php?id="+adherent_id, function(data){
                         //if found then display all lignes frais of that user
                         if(data.records){
                             clearResponse();
@@ -2467,17 +2466,17 @@
          // get input data 
          adherent_id = $(this).find(":input[name='id_user']").val();
          // check if id_user input is valid or not
-         $.getJSON("http://localhost/M2L/api/user/read_one_user.php?id="+adherent_id, function(da){
+         $.getJSON("api/user/read_one_user.php?id="+adherent_id, function(da){
                 //if cant find that id_user or if found but role is different than 'adherent'
                 if(!da.id || (da.id && da.role != 'adherent')){
                     //display response
                     $('#response').html(`<div class='alert alert-danger'>L'utilisateur ${adherent_id} n'est pas un adhérent!</div>`);
                 }else{
                     //check if this id_user has any lignes frais
-                    $.getJSON("http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id="+adherent_id, function(data){
+                    $.getJSON("api/ligne_frais/read_by_id_user.php?id="+adherent_id, function(data){
                         //if found his lignes frais then check if this user has bordereau or not yet
                         if(data.records){
-                            $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(d){
+                            $.getJSON("api/bordereau/read_by_id_user.php?id=" + adherent_id, function(d){
                                 //if not yet created his bordereau then show bordereau to save in system
                                 if(d.message){
                                     clearResponse();
@@ -2538,7 +2537,7 @@
                 sendAndGetCERFA(adherent_id);
                 //send email to inform adherent about the cerfa is ready using ajax
                 var response = '';
-                $.getJSON("http://localhost/M2L/api/user/read_one_user.php?id=" + adherent_id, function(d){
+                $.getJSON("api/user/read_one_user.php?id=" + adherent_id, function(d){
 
                     $.ajax({
                         url: "forms/send_cerfa.php",
@@ -2556,7 +2555,7 @@
                     });
                 });
                 // check if cerfa already exists in DB by using 'read one record based on given id'
-                $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(data){
+                $.getJSON("api/bordereau/read_by_id_user.php?id=" + adherent_id, function(data){
                     //if not yet created in DB then create:
                     if(!data.cerfa){
                     //define name of bordereau to inject in database
@@ -2565,7 +2564,7 @@
                     var src_cerfa = `user_id_${adherent_id}_${this_year}.pdf`;
                     // make change in table bordereau in database
                     $.ajax({
-                        url: "http://localhost/M2L/api/bordereau/add_cerfa.php",
+                        url: "api/bordereau/add_cerfa.php",
                         type : "POST",
                         dataType : 'json',
                         data : JSON.stringify({ id_user: adherent_id, src_cerfa: src_cerfa }),
@@ -2616,7 +2615,7 @@
         // get demandeur id
         var id = $(this).attr('data-id');
         // read record based on given ID
-        $.getJSON("http://localhost/M2L/api/bordereau/read_one_bordereau.php?id=" + id, function(data){
+        $.getJSON("api/bordereau/read_one_bordereau.php?id=" + id, function(data){
             // show HTML template
             showOneBordereauTemplateTresorier(data);
             // chage page title
@@ -2664,7 +2663,7 @@
                 sendAndGetCERFA(adherent_id);
                 //send email to inform adherent about the cerfa is ready using ajax
                 var response = '';
-                $.getJSON("http://localhost/M2L/api/user/read_one_user.php?id=" + adherent_id, function(d){
+                $.getJSON("api/user/read_one_user.php?id=" + adherent_id, function(d){
 
                     $.ajax({
                         url: "forms/send_cerfa.php",
@@ -2683,7 +2682,7 @@
                 });
 
                 // check if cerfa already exists in DB by using 'read one record based on given id'
-                $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(data){
+                $.getJSON("api/bordereau/read_by_id_user.php?id=" + adherent_id, function(data){
                     //if not yet created in DB then create:
                     if(!data.cerfa){
                     //define name of bordereau to inject in database
@@ -2692,7 +2691,7 @@
                     var src_cerfa = `user_id_${adherent_id}_${this_year}.pdf`;
                     // make change in table bordereau in database
                     $.ajax({
-                        url: "http://localhost/M2L/api/bordereau/add_cerfa.php",
+                        url: "api/bordereau/add_cerfa.php",
                         type : "POST",
                         dataType : 'json',
                         data : JSON.stringify({ id_user: adherent_id, src_cerfa: src_cerfa }),
@@ -2743,7 +2742,7 @@
 
                     // send request to api / remote server to change 'etre_valide= null'
                     $.ajax({
-                        url: "http://localhost/M2L/api/bordereau/change_status.php",
+                        url: "api/bordereau/change_status.php",
                         type : "POST",
                         dataType : 'json',
                         data : JSON.stringify({ id: ligne_id, valide: null}),
@@ -2815,10 +2814,10 @@
                    // save bordereau on server and download bordereau on user's end
                    sendAndGetPDF(adherent_id); 
 
-                    $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(data){
+                    $.getJSON("api/bordereau/read_by_id_user.php?id=" + adherent_id, function(data){
                         // send request to api to change status of bordereau: become etre_validé
                         $.ajax({
-                            url: "http://localhost/M2L/api/bordereau/change_status.php",
+                            url: "api/bordereau/change_status.php",
                             type : "POST",
                             dataType : 'json',
                             data : JSON.stringify({ id: data.id, valide: 1}),
@@ -2833,7 +2832,7 @@
                         });
                     });
                     //retrieve all lignes frais by id user to change status of all lignes frais corresponding 'etre_valide = 1'
-                   $.getJSON("http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id=" + adherent_id, function(da){
+                   $.getJSON("api/ligne_frais/read_by_id_user.php?id=" + adherent_id, function(da){
                         //set counter to count number of lignes frais affected
                         var counter = 0;
                         // loop through returned list of data
@@ -2841,7 +2840,7 @@
                             if(val.etre_valide != 1){
                                 $.ajax({
                                     type: 'POST',
-                                    url: 'http://localhost/M2L/api/ligne_frais/change_status.php',
+                                    url: 'api/ligne_frais/change_status.php',
                                     data: JSON.stringify({ id: val.id, valide: 1 }),
                                     async: false, //set to false to wait for the counter to get augmented.
                                     success: function() {
@@ -2881,7 +2880,7 @@
         var thisForm = document.getElementById("mdp_oublie_form");
         var formData = new FormData(document.getElementById("mdp_oublie_form"));
        
-        $.post("http://localhost/M2L/api/user/search_email_user.php", JSON.stringify({ email: email })).done(function(result) {
+        $.post("api/user/search_email_user.php", JSON.stringify({ email: email })).done(function(result) {
             $('.alert').remove();
             php_email_form_submit(thisForm, action, formData);  
             //to avoid the authentification of email input of PHPEmail function, we dont 'catch error' in this email-sending-form, we suppose as if email exists in DB -> as if its real!
@@ -2906,7 +2905,7 @@
       if(mdp==mdp_confirm){
         // submit form data to api update_pw: check for (email exists and update mdp done in DB)
         $.ajax({
-            url: "http://localhost/M2L/api/user/update_pw.php",
+            url: "api/user/update_pw.php",
             type : "POST",
             dataType : 'json',
             data : JSON.stringify({ email: email, mdp: mdp}),

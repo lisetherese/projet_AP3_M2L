@@ -28,7 +28,7 @@ function showCERFAForm(adherent_id){
     var this_year = today.getFullYear();
     today = dd + '/' + mm + '/' + this_year;
     //to get id of bordereau to put on page automatically
-    $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(data){
+    $.getJSON("api/bordereau/read_by_id_user.php?id=" + adherent_id, function(data){
         var html = `
         <div id="pdf" class="pdf" style="background-color:white;color:black;text-align: left;margin:20px 20px;font-family: 'Times New Roman', Times, serif;">
         <div class="container">
@@ -75,7 +75,7 @@ function showCERFAForm(adherent_id){
         </div>
         `;
         //to get all info of demandeur
-        $.getJSON("http://localhost/M2L/api/demandeur/read_by_id.php?id=" + adherent_id, function(da){
+        $.getJSON("api/demandeur/read_by_id.php?id=" + adherent_id, function(da){
             html +=`
                 <div class="px-3" style="width: 100%;border: black 1px solid;padding-top: 5px;margin-bottom: 10px;">
                 <h5 style="font-size: 14pt;"><span style="font-weight: bold;margin-right: 15px;">Nom:</span><input style="width:400px;border: none; border-bottom: dotted black 1px;text-align: center;" type="text" value="${da.nom} ${da.prenom}"/></h5>
@@ -83,7 +83,7 @@ function showCERFAForm(adherent_id){
                 <p>Code postal  <input style="width:60px;border: none; border-bottom: dotted black 1px;text-align: center;" type="text" value="${da.cp}"/> Commune   <input style="width:200px;border: none; border-bottom: dotted black 1px;text-align: center;" type="text" value="${da.ville}"/></p> 
             </div>`;
              // get data from the api based on data searched by id user to get amount total of all lignes frais
-            $.getJSON("http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id=" + adherent_id, function(d){
+            $.getJSON("api/ligne_frais/read_by_id_user.php?id=" + adherent_id, function(d){
                 var cout_trajet;
                 var total_par_ligne;
                 var montant=0;

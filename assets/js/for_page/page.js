@@ -115,7 +115,7 @@ function showLoggedInMenu(role){
                         <a class="nav-item nav-link" href="#" id='gerer-motif'>Motifs</a>
                         `;
 
-    const menuUser = `<a class="d-none nav-item nav-link" href="#" id='demander-adhesion'>Demander d'adhésion</a>
+    const menuUser = `<a class="d-none nav-item nav-link" href="#" id='demander-adhesion'>Demande d'adhésion</a>
                       <a class="d-none nav-item nav-link" href="#" id='gerer-demande'>Gérer la Demande</a>`;
 
     const menuTresor = `<a class="nav-item nav-link" href="#" id='consulter-bordereau'>Consulter Bordereaux</a>
@@ -445,7 +445,7 @@ function sendAndGetPDF(adherent_id) {
         //save to files/bordereaux on server
         $.ajax({
             type: "POST",
-            url: "http://localhost/M2L/api/bordereau/upload_files.php",
+            url: "api/bordereau/upload_files.php",
             data: { 
                data: imgData, idUser: adherent_id
             }
@@ -512,13 +512,13 @@ function sendAndGetCERFA(adherent_id) {
             pdf.addPage(PDF_Width, PDF_Height);
             pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
         }
-        pdf.save("bordereau.pdf"); 
+        pdf.save(`bordereau_adherent_${adherent_id}.pdf`); 
         //method btoa() encodes a string in base-64.
         var cerfa =  btoa(pdf.output()); 
         //save to files/bordereaux on server
         $.ajax({
             type: "POST",
-            url: "http://localhost/M2L/api/bordereau/upload_files.php",
+            url: "api/bordereau/upload_files.php",
             data: { 
                 datapdf: cerfa, idUser: adherent_id
             }

@@ -135,7 +135,7 @@ function showLignesFraisTemplateUser(data, keywords){
 }
 
 function showLignesFraisFirstPageUser(id_user){
-    var json_url="http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id="+id_user;
+    var json_url="api/ligne_frais/read_by_id_user.php?id="+id_user;
     showLignesFraisUser(json_url, id_user);
 }
 
@@ -159,7 +159,7 @@ function showLignesFraisUser(json_url, id_user){
     
 }
 function addBordereauControlButton(adherent_id){
-    $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(dat){
+    $.getJSON("api/bordereau/read_by_id_user.php?id=" + adherent_id, function(dat){
         if(!dat.src_bordereau){
             $('#create-bordereau-user1').show();
             $('#create-ligne-frais-user').show();
@@ -510,7 +510,7 @@ function updateOneLigneFraisUser(data){
                 <input type="hidden" class="form-control" name="id_user" id="id_user" value="${data.id_user}"/>
                 <select name='id_motif' id="id_motif" class='form-control'>`;
 
-        $.getJSON("http://localhost/M2L/api/motif/read.php", function(resultat){
+        $.getJSON("api/motif/read.php", function(resultat){
             $.each(resultat.records, function(key, val){
                 
                 // pre-select option is category id is the same
@@ -615,7 +615,7 @@ function showOneLigneFraisTemplateUser(data){
                                 <td><a href="assets/files/ligne_frais/user_id_${data.id_user}/${data.justificatif}" target="_blank">` + data.justificatif + `</a></td>
                             </tr>`;
     }                       
-        $.getJSON("http://localhost/M2L/api/motif/read_one_motif.php?id=" + data.id_motif, function(resultat){
+        $.getJSON("api/motif/read_one_motif.php?id=" + data.id_motif, function(resultat){
             read_one_ligne_frais_html+=`<tr>
                                         <td>Libelle du motif</td>
                                         <td>` + resultat.libelle + `</td>

@@ -108,7 +108,7 @@ function showLiguesTemplate(data, keywords){
 }
 
 function showLiguesFirstPage(){
-    var json_url="http://localhost/M2L/api/ligue/read_paging_ligues.php";
+    var json_url="api/ligue/read_paging_ligues.php";
     showLigues(json_url);
 }
 

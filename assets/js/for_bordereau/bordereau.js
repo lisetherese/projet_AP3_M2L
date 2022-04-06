@@ -6,7 +6,7 @@ function showBordereau(adherent_id){
     var this_year = today.getFullYear();
     today = dd + '/' + mm + '/' + this_year;
     
-    $.getJSON("http://localhost/M2L/api/demandeur/read_by_id.php?id=" + adherent_id, function(data){
+    $.getJSON("api/demandeur/read_by_id.php?id=" + adherent_id, function(data){
         
         var html = `
         <div id="pdf" class="pdf" style="background-color:white;color:black;text-align: left;margin:20px 20px;">
@@ -51,7 +51,7 @@ function showBordereau(adherent_id){
                 </thead>
                 <tbody style="background-color: #CCFFCC;">`;
             // get data from the api based on data searched by id user
-        $.getJSON("http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id=" + adherent_id, function(da){
+        $.getJSON("api/ligne_frais/read_by_id_user.php?id=" + adherent_id, function(da){
             var cout_trajet;
             var total_par_ligne;
             var montant=0;
@@ -156,7 +156,7 @@ function showBordereauAdmin(adherent_id){
     var this_year = today.getFullYear();
     today = dd + '/' + mm + '/' + this_year;
     
-    $.getJSON("http://localhost/M2L/api/demandeur/read_by_id.php?id=" + adherent_id, function(data){
+    $.getJSON("api/demandeur/read_by_id.php?id=" + adherent_id, function(data){
         
         var html = `
         <div id="pdf" class="pdf" style="background-color:white;color:black;text-align: left;margin:20px 20px;">
@@ -201,7 +201,7 @@ function showBordereauAdmin(adherent_id){
                 </thead>
                 <tbody style="background-color: #CCFFCC;">`;
             // get data from the api based on data searched by id user
-        $.getJSON("http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id=" + adherent_id, function(da){
+        $.getJSON("api/ligne_frais/read_by_id_user.php?id=" + adherent_id, function(da){
             var cout_trajet;
             var total_par_ligne;
             var montant=0;
@@ -300,7 +300,7 @@ function showBordereauAdmin(adherent_id){
 //function to retrieve value from getJSON() using callback
 function getLibelle(val,callback){
     var libelle;
-    $.getJSON("http://localhost/M2L/api/motif/read_one_motif.php?id=" + val, function(result){             
+    $.getJSON("api/motif/read_one_motif.php?id=" + val, function(result){             
         libelle = result.libelle;
         callback(libelle);         
     });
@@ -467,7 +467,7 @@ function showBordereauxTemplate(data, keywords){
 
 
 function showBordereauxFirstPage(){
-    var json_url="http://localhost/M2L/api/bordereau/read_paging_bordereau.php";
+    var json_url="api/bordereau/read_paging_bordereau.php";
     showBordereaux(json_url);
 }
 
@@ -667,7 +667,7 @@ function showAllBordereauxButton(){
 }
 
 function deleteFilesByIdBordereau(bordereau_id){
-    $.getJSON("http://localhost/M2L/api/bordereau/read_one_bordereau.php?id=" + bordereau_id, function(data){
+    $.getJSON("api/bordereau/read_one_bordereau.php?id=" + bordereau_id, function(data){
    
         var formData = new FormData();
         
@@ -675,7 +675,7 @@ function deleteFilesByIdBordereau(bordereau_id){
         
         var xhttp = new XMLHttpRequest();
         // Set POST method and ajax file path
-        xhttp.open("POST", "http://localhost/M2L/api/bordereau/delete_files.php", true);
+        xhttp.open("POST", "api/bordereau/delete_files.php", true);
         // call on request changes state
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {

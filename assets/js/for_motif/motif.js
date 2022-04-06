@@ -94,7 +94,7 @@ function showMotifsTemplate(data, keywords){
 }
 
 function showMotifsFirstPage(){
-    var json_url="http://localhost/M2L/api/motif/read_paging_motifs.php";
+    var json_url="api/motif/read_paging_motifs.php";
     showMotifs(json_url);
 }
 

@@ -31,7 +31,7 @@ CREATE TABLE `bordereau` (
   PRIMARY KEY (`id_bordereau`),
   KEY `id_utilisateur_idx` (`id_utilisateur`),
   CONSTRAINT `id_utilisateur` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateur` (`id_utilisateur`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `bordereau` (
 
 LOCK TABLES `bordereau` WRITE;
 /*!40000 ALTER TABLE `bordereau` DISABLE KEYS */;
-INSERT INTO `bordereau` VALUES (6,'user_id_11_2022.jpg',11,1,'user_id_11_2022.pdf'),(7,'user_id_5_2022.jpg',5,1,'user_id_5_2022.pdf');
+INSERT INTO `bordereau` VALUES (6,'user_id_11_2022.jpg',11,1,'user_id_11_2022.pdf'),(7,'user_id_5_2022.jpg',5,1,'user_id_5_2022.pdf'),(8,'user_id_8_2022.jpg',8,1,'user_id_8_2022.pdf'),(11,'user_id_12_2022.jpg',12,1,'user_id_12_2022.pdf'),(12,'user_id_18_2022.jpg',18,NULL,NULL),(13,'user_id_20_2022.jpg',20,1,'user_id_20_2022.pdf');
 /*!40000 ALTER TABLE `bordereau` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -68,7 +68,7 @@ CREATE TABLE `demandeur` (
   KEY `id_ligue` (`id_ligue`),
   CONSTRAINT `demandeur_ibfk_1` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateur` (`id_utilisateur`),
   CONSTRAINT `id_ligue` FOREIGN KEY (`id_ligue`) REFERENCES `ligues` (`id_ligues`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,7 +77,7 @@ CREATE TABLE `demandeur` (
 
 LOCK TABLES `demandeur` WRITE;
 /*!40000 ALTER TABLE `demandeur` DISABLE KEYS */;
-INSERT INTO `demandeur` VALUES (3,'Vincent','Le','17 rue Jean Laurent',78110,'Le vesinet',1345,'1990-10-02',1,8,3),(6,'Henry','ky','rue de la cime',91130,'ris orangis',543265,'1985-09-12',1,10,1),(25,'Vincent','Lee','rue Marechal Foche',78130,'houilles',456789,'1990-08-09',1,12,1),(34,'Kim','Sarah Phi','rue Jean Laurent',78110,'le Vesinet',45760,'1990-08-09',1,11,3),(35,'phi','Thanh Phong','7 rue du gue',78089,'le Pecq',355767,'1990-06-06',1,5,1),(36,'paris','hilton','89 rue du Pont',75015,'Paris',68799,'1995-06-14',NULL,14,3);
+INSERT INTO `demandeur` VALUES (3,'Vincent','Le','17 rue Jean Laurent',78110,'Le vesinet',1345,'1990-10-02',1,8,3),(6,'Henry','ky','rue de la cime',91130,'ris orangis',543265,'1985-09-12',1,10,1),(34,'Kim','Sarah Phi','rue Jean Laurent',78110,'le Vesinet',45760,'1990-08-09',1,11,3),(36,'paris','hilton','89 rue du Pont',75015,'Paris',68799,'1995-06-14',1,14,3),(37,'Lise Phong','Ky','76 rue du Troullon',91110,'Evry',124556,'1995-06-13',1,18,3),(38,'Phong','Charles','76 rue du Trou Grillon',91130,'ris orangis',576879,'1990-07-06',1,12,1),(39,'nathan','maury','rue Jean Laurent',78110,'le Vesinet',4657678,'2022-03-06',1,20,3);
 /*!40000 ALTER TABLE `demandeur` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,10 +89,10 @@ DROP TABLE IF EXISTS `domaine`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `domaine` (
-  `id_domaine` int NOT NULL,
+  `id_domaine` int NOT NULL AUTO_INCREMENT,
   `libelle` varchar(50) NOT NULL,
   PRIMARY KEY (`id_domaine`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -101,6 +101,7 @@ CREATE TABLE `domaine` (
 
 LOCK TABLES `domaine` WRITE;
 /*!40000 ALTER TABLE `domaine` DISABLE KEYS */;
+INSERT INTO `domaine` VALUES (1,'football'),(2,'tennis'),(3,'pingpong');
 /*!40000 ALTER TABLE `domaine` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -133,7 +134,7 @@ CREATE TABLE `ligne_frais` (
   KEY `id_utilisateur_idx` (`id_utilisateur`) /*!80000 INVISIBLE */,
   KEY `id_motif_idx` (`id_motif`),
   CONSTRAINT `id_motif` FOREIGN KEY (`id_motif`) REFERENCES `motif` (`id_motif`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -142,7 +143,7 @@ CREATE TABLE `ligne_frais` (
 
 LOCK TABLES `ligne_frais` WRITE;
 /*!40000 ALTER TABLE `ligne_frais` DISABLE KEYS */;
-INSERT INTO `ligne_frais` VALUES (17,'2022-01-02','paris-evry',30.6,61.2,NULL,NULL,NULL,8.5,8.5,'devisWebmana (19).pdf',NULL,NULL,NULL,11,1,1),(19,'2022-01-31','antony-paris',24.3,48.6,NULL,NULL,NULL,NULL,NULL,NULL,12.8,12.8,'faut-faire-pendant-vacance.jpg',5,1,1),(21,'2021-10-13','paris-london',567,1134,28.8,57.6,'backgV.jpg',NULL,NULL,NULL,15.6,15.6,'forH.jpg',8,4,NULL),(22,'2022-02-03','paris-lyon',546,546,NULL,NULL,NULL,5.5,16.5,'mark_watercolor.jpg',NULL,NULL,NULL,12,2,1),(23,'2022-02-23','evry-fresnes',30,30,NULL,NULL,NULL,5.5,11,'mark_watercolor.jpg',7.5,7.5,'auto_94.jfif',8,1,NULL);
+INSERT INTO `ligne_frais` VALUES (17,'2022-01-02','paris-evry',30.6,61.2,NULL,NULL,NULL,8.5,8.5,'devisWebmana (19).pdf',NULL,NULL,NULL,11,1,1),(19,'2022-01-31','antony-paris',24.3,48.6,NULL,NULL,NULL,NULL,NULL,NULL,12.8,12.8,'faut-faire-pendant-vacance.jpg',5,1,1),(22,'2022-02-03','paris-lyon',546,546,NULL,NULL,NULL,5.5,16.5,'mark_watercolor.jpg',NULL,NULL,NULL,12,2,1),(23,'2022-02-23','evry-fresnes',30,30,NULL,NULL,NULL,5.5,11,'mark_watercolor.jpg',7.5,7.5,'auto_94.jfif',8,1,1),(24,'2022-03-02','Blois-Paris',191,382,12.5,25,'mark_watercolor.jpg',NULL,NULL,NULL,NULL,NULL,NULL,12,3,1),(26,'2022-03-01','Maux - Versailles',76,152,5.2,10.4,'thiep.jpg',NULL,NULL,NULL,12.8,25.6,'auto_94.jfif',18,1,1),(27,'2022-03-02','lyon-bordeaux',578,1156,26.9,53.8,'monAdresse.PNG',7.5,15,'thiep_cuoi.jpg',NULL,NULL,NULL,18,3,1),(28,'2022-03-10','paris-evry',35.9,71.8,NULL,NULL,NULL,6.8,13.6,'vitrophanie1.PNG',NULL,NULL,NULL,18,5,NULL),(29,'2022-03-10','paris-abc',767,1534,NULL,NULL,NULL,7.5,30,'portfolio_chart.png',NULL,NULL,NULL,20,2,1);
 /*!40000 ALTER TABLE `ligne_frais` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -246,12 +247,12 @@ DROP TABLE IF EXISTS `salle`;
 CREATE TABLE `salle` (
   `id_salle` int NOT NULL AUTO_INCREMENT,
   `nom` varchar(50) NOT NULL,
-  `capacite` varchar(50) DEFAULT NULL,
+  `capacite` int DEFAULT NULL,
   `id_domaine` int NOT NULL,
   PRIMARY KEY (`id_salle`),
-  KEY `id_domaine` (`id_domaine`),
-  CONSTRAINT `salle_ibfk_1` FOREIGN KEY (`id_domaine`) REFERENCES `domaine` (`id_domaine`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `id_domaine_idx` (`id_domaine`),
+  CONSTRAINT `id_domaine` FOREIGN KEY (`id_domaine`) REFERENCES `domaine` (`id_domaine`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -260,6 +261,7 @@ CREATE TABLE `salle` (
 
 LOCK TABLES `salle` WRITE;
 /*!40000 ALTER TABLE `salle` DISABLE KEYS */;
+INSERT INTO `salle` VALUES (1,'Mojarelle',150,2),(2,'Gruber',242,1),(3,'Lamour',100,3),(5,'Longwy',190,3);
 /*!40000 ALTER TABLE `salle` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -301,7 +303,7 @@ CREATE TABLE `utilisateur` (
   `droit_reservation` tinyint(1) NOT NULL,
   `niveau_tarif` int NOT NULL,
   PRIMARY KEY (`id_utilisateur`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -310,7 +312,7 @@ CREATE TABLE `utilisateur` (
 
 LOCK TABLES `utilisateur` WRITE;
 /*!40000 ALTER TABLE `utilisateur` DISABLE KEYS */;
-INSERT INTO `utilisateur` VALUES (4,'lisetherese@yahoo.com','$2y$10$yhldxgZ6ES/GCTY6gsotg.jL/DLEr4X3pVBXRaYXji4gSQ/39hvY.','admin',1,1),(5,'abc@yahoo.com','$2y$10$PnIKcfp2j4VP4t/boQbldejAHVSTr4nUHhBv2au1Gl4IOz35tf6L2','adherent',0,3),(8,'def@yahoo.com','$2y$10$F4rf1jD3dd7EsdOzuyfs1uEy2EhnN0c0/h.ah.5zI0rHM5od6VBia','adherent',1,1),(9,'hanhtrinhvedathua@gmail.com','$2y$10$WPrEEXmELVfpyBmyhIJJg.C2Bh6voG0bkV3jFI1uZou8JuPZYvxJ2','tresorier',1,1),(10,'hkkjkl@yahoo.com','$2y$10$A.EmPHXMtWUeBE038qfzn.OjIq//ugc2ex/TiaqhD4CyOYvqxq6dS','adherent',0,4),(11,'phi@gmail.com','$2y$10$iJHk0pYXv7zAdYct5ldl3OYuxlTzUYJqYhxFHJUlLmTryrDLlDCtu','adherent',0,1),(12,'phong@yahoo.com','$2y$10$R8WQ50NZTp2DnC2UuB7TkOVFMFoRYzX1017qytdgQxfo/IFSxbJre','adherent',0,1),(13,'beo@gmail.com','$2y$10$bfLLjY0qU/adT55Jlc2zte/WEOuFlh72zBpNeM7tXlakUeBN5SS2y','user',0,4),(14,'paris@yahoo.com','$2y$10$bmqiBnt/pxmd01p1iLLN0u/4lt.WSlCvgOUsghLle4RV1RpnHxbYS','user',0,4);
+INSERT INTO `utilisateur` VALUES (4,'lisetherese@yahoo.com','$2y$10$ynbOxFe6to3EvA88PLJLOeT8uNqYZWbQlXhznap0DS0c5Igi3EYTO','admin',1,1),(5,'abc@yahoo.com','$2y$10$PnIKcfp2j4VP4t/boQbldejAHVSTr4nUHhBv2au1Gl4IOz35tf6L2','adherent',1,4),(8,'def@yahoo.com','$2y$10$F4rf1jD3dd7EsdOzuyfs1uEy2EhnN0c0/h.ah.5zI0rHM5od6VBia','adherent',1,1),(9,'hanhtrinhvedathua@gmail.com','$2y$10$WPrEEXmELVfpyBmyhIJJg.C2Bh6voG0bkV3jFI1uZou8JuPZYvxJ2','tresorier',1,1),(10,'hkkjkl@yahoo.com','$2y$10$A.EmPHXMtWUeBE038qfzn.OjIq//ugc2ex/TiaqhD4CyOYvqxq6dS','adherent',0,4),(11,'phi@gmail.com','$2y$10$iJHk0pYXv7zAdYct5ldl3OYuxlTzUYJqYhxFHJUlLmTryrDLlDCtu','adherent',0,1),(12,'phong@yahoo.com','$2y$10$R8WQ50NZTp2DnC2UuB7TkOVFMFoRYzX1017qytdgQxfo/IFSxbJre','adherent',0,1),(14,'paris@yahoo.com','$2y$10$bmqiBnt/pxmd01p1iLLN0u/4lt.WSlCvgOUsghLle4RV1RpnHxbYS','adherent',0,4),(15,'harold_didier@gmail.com','$2y$10$O/bGDZKfVM6zIBLzhVa8SO2fcw.A1udtxYJ/hK1u/LeQRePoMfwG6','user',0,4),(18,'lise@yahoo.com','$2y$10$CC5WgiZF6Wektk1xB2lVxewuyk9IkbTUOzGPNHX1V01nPaowcvH2K','adherent',0,4),(19,'karakotoson@gmail.com','$2y$10$Diyg7B1Mh2TrxKVN3tifueNxHkUtKdahYLoApjK1jm6iaNUm/enIe','user',0,4),(20,'nathan@laury.org','$2y$10$EAFOibxzjvWxHnh2SQdPReNzKXnnJbDhE6d3HRRtY3mfV0paxfSEO','adherent',0,4);
 /*!40000 ALTER TABLE `utilisateur` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -323,4 +325,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-03 16:14:28
+-- Dump completed on 2022-04-06 14:04:24

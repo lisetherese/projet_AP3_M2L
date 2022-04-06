@@ -8,7 +8,7 @@ function showBordereauTresorier(adherent_id){
     today = dd + '/' + mm + '/' + this_year;
     
     
-    $.getJSON("http://localhost/M2L/api/demandeur/read_by_id.php?id=" + adherent_id, function(data){
+    $.getJSON("api/demandeur/read_by_id.php?id=" + adherent_id, function(data){
         
         var html = `
         <div id="pdf" class="pdf" style="background-color:white;color:black;text-align: left;margin:20px 20px;">
@@ -53,7 +53,7 @@ function showBordereauTresorier(adherent_id){
             </thead>
             <tbody style="background-color: #CCFFCC;">`;
             // get data from the api based on data searched by id user
-        $.getJSON("http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id=" + adherent_id, function(da){
+        $.getJSON("api/ligne_frais/read_by_id_user.php?id=" + adherent_id, function(da){
             var cout_trajet;
             var total_par_ligne;
             var montant=0;
@@ -147,7 +147,7 @@ function showBordereauTresorier(adherent_id){
 
             $('#content').html(html);
             //retrieve id of bordereau to input in No d'ordre du reçu
-            $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(resu){
+            $.getJSON("api/bordereau/read_by_id_user.php?id=" + adherent_id, function(resu){
                 $('#num_ordre').html(`${resu.id}`);
             });
         });          
@@ -159,7 +159,7 @@ function showBordereauTresorier(adherent_id){
 //function to retrieve value from getJSON() using callback
 function getLibelle(val,callback){
     var libelle;
-    $.getJSON("http://localhost/M2L/api/motif/read_one_motif.php?id=" + val, function(result){             
+    $.getJSON("api/motif/read_one_motif.php?id=" + val, function(result){             
         libelle = result.libelle;
         callback(libelle);         
     });
@@ -294,7 +294,7 @@ function showBordereauxTemplateTresorier(data, keywords){
 
 //add url in function getJSON below
 function showBordereauxFirstPageTresorier(){
-    var json_url="http://localhost/M2L/api/bordereau/read_paging_bordereau.php";
+    var json_url="api/bordereau/read_paging_bordereau.php";
     showBordereauxTresorier(json_url);
 }
 
@@ -404,7 +404,7 @@ function showCERFAFormTresorier(adherent_id){
     var this_year = today.getFullYear();
     today = dd + '/' + mm + '/' + this_year;
     //to get id of bordereau to put on page automatically
-    $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + adherent_id, function(data){
+    $.getJSON("api/bordereau/read_by_id_user.php?id=" + adherent_id, function(data){
         var html = `
         <div id="pdf" class="pdf" style="background-color:white;color:black;text-align: left;margin:20px 20px;font-family: 'Times New Roman', Times, serif;">
         <div class="container">
@@ -451,7 +451,7 @@ function showCERFAFormTresorier(adherent_id){
         </div>
         `;
         //to get all info of demandeur
-        $.getJSON("http://localhost/M2L/api/demandeur/read_by_id.php?id=" + adherent_id, function(da){
+        $.getJSON("api/demandeur/read_by_id.php?id=" + adherent_id, function(da){
             html +=`
                 <div class="px-3" style="width: 100%;border: black 1px solid;padding-top: 5px;margin-bottom: 10px;">
                 <h5 style="font-size: 14pt;"><span style="font-weight: bold;margin-right: 15px;">Nom:</span><input style="width:400px;border: none; border-bottom: dotted black 1px;text-align: center;" type="text" value="${da.nom} ${da.prenom}"/></h5>
@@ -459,7 +459,7 @@ function showCERFAFormTresorier(adherent_id){
                 <p>Code postal  <input style="width:60px;border: none; border-bottom: dotted black 1px;text-align: center;" type="text" value="${da.cp}"/> Commune   <input style="width:200px;border: none; border-bottom: dotted black 1px;text-align: center;" type="text" value="${da.ville}"/></p> 
             </div>`;
              // get data from the api based on data searched by id user to get amount total of all lignes frais
-            $.getJSON("http://localhost/M2L/api/ligne_frais/read_by_id_user.php?id=" + adherent_id, function(d){
+            $.getJSON("api/ligne_frais/read_by_id_user.php?id=" + adherent_id, function(d){
                 var cout_trajet;
                 var total_par_ligne;
                 var montant=0;

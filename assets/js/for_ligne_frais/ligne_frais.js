@@ -109,7 +109,7 @@ async function showLignesFraisTemplate(data, keywords){
 
 
 function showLignesFraisFirstPage(){
-    var json_url="http://localhost/M2L/api/ligne_frais/read_paging_lignes.php";
+    var json_url="api/ligne_frais/read_paging_lignes.php";
     showLignesFrais(json_url);
 }
 
@@ -249,7 +249,7 @@ function createLigneFraisForm(){
 
 function deleteFilesById(ligne_id){
     // read ligne frais record based on given ID
-    $.getJSON("http://localhost/M2L/api/ligne_frais/read_one_ligne_frais.php?id=" + ligne_id, function(data){
+    $.getJSON("api/ligne_frais/read_one_ligne_frais.php?id=" + ligne_id, function(data){
         var formData = new FormData();
         formData.append("id_user", data.id_user);
         if(data.peage_justificatif){
@@ -263,7 +263,7 @@ function deleteFilesById(ligne_id){
         }
         var xhttp = new XMLHttpRequest();
         // Set POST method and ajax file path
-       xhttp.open("POST", "http://localhost/M2L/api/ligne_frais/delete_files.php", true);
+       xhttp.open("POST", "api/ligne_frais/delete_files.php", true);
        // call on request changes state
        xhttp.onreadystatechange = function() {
            if (this.readyState == 4 && this.status == 200) {
@@ -500,7 +500,7 @@ function updateOneLigneFrais(data){
             <td>
                 <select name='id_motif' id="id_motif" class='form-control'>`;
 
-        $.getJSON("http://localhost/M2L/api/motif/read.php", function(resultat){
+        $.getJSON("api/motif/read.php", function(resultat){
             $.each(resultat.records, function(key, val){
                 
                 // pre-select option is category id is the same
@@ -613,7 +613,7 @@ function showOneLigneFraisTemplate(data){
                                 <td>` + data.id_user + `</td>
                             </tr>`;
                             
-    $.getJSON("http://localhost/M2L/api/user/read_one_user.php?id=" + data.id_user, function(result){
+    $.getJSON("api/user/read_one_user.php?id=" + data.id_user, function(result){
         read_one_ligne_frais_html+=`<tr>
                                     <td>Email d'utilisateur</td>
                                     <td>` + result.email + `</td>
@@ -622,7 +622,7 @@ function showOneLigneFraisTemplate(data){
                                     <td>Id motif</td>
                                     <td>` + data.id_motif + `</td>
                                 </tr>`;
-        $.getJSON("http://localhost/M2L/api/motif/read_one_motif.php?id=" + data.id_motif, function(resultat){
+        $.getJSON("api/motif/read_one_motif.php?id=" + data.id_motif, function(resultat){
             read_one_ligne_frais_html+=`<tr>
                                         <td>Libelle du motif</td>
                                         <td>` + resultat.libelle + `</td>
@@ -651,7 +651,7 @@ function showOneLigneFraisTemplate(data){
                 // inject html to 'page-content' of our app
                 $("#content").html(read_one_ligne_frais_html);
             }else{
-                $.getJSON("http://localhost/M2L/api/bordereau/read_by_id_user.php?id=" + id_user, function(da){
+                $.getJSON("api/bordereau/read_by_id_user.php?id=" + id_user, function(da){
                     if( da.message || (da.etre_valide == null || da.etre_valide == 0)){
                         read_one_ligne_frais_html+=`
                                     <tr>

@@ -38,7 +38,7 @@ if($num>0){
         extract($row);
   
         $ligue_item=array(
-            "id" => $id_ligue,
+            "id" => $id_ligues,
             "nom" => $nom,
             "sigle" => $sigle,
             "president" => $president,

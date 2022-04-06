@@ -114,7 +114,7 @@ function showDemandeursTemplate(data, keywords){
 }
 
 function showDemandeursFirstPage(){
-    var json_url="http://localhost/M2L/api/demandeur/read_paging_demandeurs.php";
+    var json_url="api/demandeur/read_paging_demandeurs.php";
     showDemandeurs(json_url);
 }
 
@@ -237,7 +237,7 @@ function updateOneDemandeur(data){
             <td>
                 <select name='id_ligue' id="id_ligue" class='form-control'>`;
 
-        $.getJSON("http://localhost/M2L/api/ligue/read.php", function(resultat){
+        $.getJSON("api/ligue/read.php", function(resultat){
             $.each(resultat.records, function(key, val){
                 
                 // pre-select option is category id is the same
@@ -316,7 +316,7 @@ function showOneDemandeurTemplate(data){
                                 <td>` + data.id_user + `</td>
                             </tr>`;
                             
-    $.getJSON("http://localhost/M2L/api/user/read_one_user.php?id=" + data.id_user, function(result){
+    $.getJSON("api/user/read_one_user.php?id=" + data.id_user, function(result){
         read_one_demandeur_html+=`<tr>
                                     <td>Email d'utilisateur</td>
                                     <td>` + result.email + `</td>
@@ -325,7 +325,7 @@ function showOneDemandeurTemplate(data){
                                     <td>Id ligue</td>
                                     <td>` + data.id_ligue + `</td>
                                 </tr>`;
-        $.getJSON("http://localhost/M2L/api/ligue/read_one_ligue.php?id=" + data.id_ligue, function(resultat){
+        $.getJSON("api/ligue/read_one_ligue.php?id=" + data.id_ligue, function(resultat){
             read_one_demandeur_html+=`<tr>
                                         <td>Nom de la ligue</td>
                                         <td>` + resultat.nom + `</td>
@@ -389,7 +389,7 @@ function addAdhesion(demandeur_id, user_id){
     // first: change status of demandeur in table 'demandeur' in DB: etre_adherent = 1 
     $.post("api/demandeur/change_status.php", JSON.stringify({ id:demandeur_id })).done(function(result) {
         // then: change role in table utilisateur: from 'user' to 'adherent'
-        $.post("http://localhost/M2L/api/user/change_role.php", JSON.stringify({ id:user_id })).done(function(resultat) {
+        $.post("api/user/change_role.php", JSON.stringify({ id:user_id })).done(function(resultat) {
 
             // if succeed, re-load list of demandeurs
             showDemandeursFirstPage();
